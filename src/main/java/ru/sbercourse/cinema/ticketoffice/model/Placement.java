@@ -30,11 +30,7 @@ public class Placement extends GenericModel{
     @JoinColumn(name = "place_class_id", foreignKey = @ForeignKey(name = "fk_placements_categories"), nullable = false)
     private PlaceClass placeClass;
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "placement")
-    private Set<Order> orders;
-
-    @ToString.Exclude
-    @OneToMany(mappedBy = "placement")
-    private Set<Booking> bookings;
+//    @ToString.Exclude
+//    @OneToMany(mappedBy = "placement")
+//    private Set<Order> orders;
 }

@@ -26,7 +26,7 @@ public class Creator extends GenericModel{
     @Column(name = "position", nullable = false)
     private String position;
 
-    @ToString.Exclude
-    @ManyToMany(mappedBy = "creators")
-    private Set<Film> films;
+//    @ToString.Exclude
+//    @ManyToMany(mappedBy = "creators")
+//    private Set<Film> films;
 }

@@ -20,8 +20,8 @@ public abstract class GenericModel {
     protected Long id;
 
     @Column(name = "created_when")
-    protected LocalDateTime createdWhen = LocalDateTime.now();
+    protected LocalDateTime createdWhen;
 
     @Column(name = "created_by")
-    protected String createdBy = "DEFAULT_USER";
+    protected String createdBy;
 }

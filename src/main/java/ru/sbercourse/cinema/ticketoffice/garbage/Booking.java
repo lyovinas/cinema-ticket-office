@@ -1,4 +1,4 @@
-package ru.sbercourse.cinema.ticketoffice.model;
+package ru.sbercourse.cinema.ticketoffice.garbage;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -7,8 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import ru.sbercourse.cinema.ticketoffice.model.FilmSession;
+import ru.sbercourse.cinema.ticketoffice.model.GenericModel;
+import ru.sbercourse.cinema.ticketoffice.model.Placement;
 
-@Entity
+//@Entity
 @Table(name = "bookings")
 @NoArgsConstructor
 @Getter
@@ -16,7 +19,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @SequenceGenerator(name = "default_gen", sequenceName = "bookings_seq", allocationSize = 1)
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "jsonId")
-public class Booking extends GenericModel{
+ class Booking extends GenericModel {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "film_session_id", foreignKey = @ForeignKey(name = "fk_bookings_filmsessions"), nullable = false)

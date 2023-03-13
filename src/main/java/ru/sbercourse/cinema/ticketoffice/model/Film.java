@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -24,8 +23,8 @@ public class Film extends GenericModel{
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "release_year", nullable = false)
-    private LocalDate releaseYear;
+    @Column(name = "release_year", nullable = false, length = 4)
+    private Short releaseYear;
 
     @Column(name = "country", nullable = false)
     private String country;
@@ -34,13 +33,13 @@ public class Film extends GenericModel{
     @Enumerated
     private Genre genre;
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "film")
-    private Set<FilmSession> filmSessions;
-
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "films_creators",
             joinColumns = @JoinColumn(name = "film_id"), foreignKey = @ForeignKey(name = "fk_films_creators"),
             inverseJoinColumns = @JoinColumn(name = "creator_id"), inverseForeignKey = @ForeignKey(name = "fk_creators_films"))
     private Set<Creator> creators;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "film")
+    private Set<FilmSession> filmSessions;
 }

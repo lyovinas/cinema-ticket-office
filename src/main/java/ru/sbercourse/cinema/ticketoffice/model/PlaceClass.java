@@ -29,7 +29,7 @@ public class PlaceClass extends GenericModel{
     @Column(name = "ratio", nullable = false)
     private double ratio;
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "placeClass")
-    private Set<Placement> placements;
+//    @ToString.Exclude
+//    @OneToMany(mappedBy = "placeClass")
+//    private Set<Placement> placements;
 }

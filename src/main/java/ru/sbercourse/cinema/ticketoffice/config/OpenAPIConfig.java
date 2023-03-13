@@ -1,4 +1,4 @@
-package ru.sbercourse.cinema.ticketoffice.swagger;
+package ru.sbercourse.cinema.ticketoffice.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class OpenApiConfig {
+public class OpenAPIConfig {
 
-    //http://localhost:8080/swagger-ui/index.html#/
+    //http://localhost:8080/swagger-ui/index.html
     @Bean
     public OpenAPI TicketOfficeProject() {
         return new OpenAPI()

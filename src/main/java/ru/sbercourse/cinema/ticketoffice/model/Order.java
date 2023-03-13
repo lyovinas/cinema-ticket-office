@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "orders")
 @NoArgsConstructor
@@ -32,9 +30,9 @@ public class Order extends GenericModel{
     @JoinColumn(name = "placement_id", foreignKey = @ForeignKey(name = "fk_orders_placements"), nullable = false)
     private Placement placement;
 
-    @Column(name = "created", nullable = false)
-    private LocalDateTime created;
-
     @Column(name = "cost", nullable = false)
     private double cost;
+
+    @Column(name = "purchase", nullable = false)
+    private boolean purchase;
 }

@@ -31,9 +31,7 @@ public class FilmSession extends GenericModel{
     @Column(name = "price", nullable = false)
     private double price;
 
-    @OneToMany(mappedBy = "filmSession")
-    private Set<Order> orders;
-
-    @OneToMany(mappedBy = "filmSession")
-    private Set<Booking> bookings;
+//    @ToString.Exclude
+//    @OneToMany(mappedBy = "filmSession")
+//    private Set<Order> orders;
 }
