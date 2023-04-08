@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Создатели фильмов</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+  <div>
+    <hr class="hr"/>
+    <h3>Поиск создателя</h3>
+    <form class="needs-validation" method="POST" th:action="@{/filmCreators/search}" th:object="${filmCreatorSearchForm}">
+      <div class="mt-0 row g-2">
+        <div class="col-md">
+          <div class="form-floating">
+            <input name="fullName" type="text" class="form-control" id="fullName" required>
+            <label for="fullName">ФИО создателя</label>
+          </div>
+        </div>
+        <div class="row g-2">
+          <button type="submit" class="btn btn-secondary">Найти создателя</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <hr class="mt-3 hr"/>
+  <div class="mt-5">
+    <div class="row">
+      <div class="col">
+        <h2>Все создатели</h2>
+      </div>
+      <div class="col">
+<!--        <a sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"-->
+        <a
+           href="filmCreators/add"
+           class="btn btn-success"
+           role="button"
+           style="float: right"
+           aria-disabled="true">Добавить создателя</a>
+      </div>
+    </div>
+
+    <div>
+      <table class="table table-hover mt-3">
+        <thead>
+        <tr>
+          <th scope="col">ФИО</th>
+          <th scope="col">Позиция</th>
+<!--          <th scope="col">Фильмы</th>-->
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="filmCreator : ${filmCreators}">
+          <td th:text="${filmCreator.getFullName()}">
+<!--            <a class="text-link text-blue" th:href="'/filmCreators/' + ${filmCreator.getId()}" th:text="${filmCreator.getFullName()}"></a>-->
+          </td>
+          <td th:text="${filmCreator.getPosition()}"></td>
+<!--          <td>-->
+<!--            <ul>-->
+<!--              <li th:each="film : ${filmCreator.getFilms()}" th:text="${film.getTitle()}"></li>-->
+<!--            </ul>-->
+<!--          </td>-->
+          <td>
+<!--            <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">-->
+            <div>
+              <a class="btn btn-sm btn-outline-success" th:href="'/filmCreators/update/' + ${filmCreator.getId()}" style="float: right">Редактировать</a>
+              <a th:if="${!filmCreator.isDeleted()}" class="btn btn-sm btn-outline-danger" th:href="'/filmCreators/delete/' + ${filmCreator.getId()}"
+                 onclick="return confirm('Вы действительно хотите удалить создателя?');" style="float: right">Удалить</a>
+              <a th:if="${filmCreator.isDeleted()}" class="btn btn-sm btn-outline-warning" th:href="'/filmCreators/restore/' + ${filmCreator.getId()}" style="float: right">Восстановить</a>
+<!--              <a class="btn btn-sm btn-outline-success" th:href="'/filmCreators/addFilm/' + ${filmCreator.getId()}" style="float: right">Добавить фильм</a>-->
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <nav aria-label="Pagination" th:if="${filmCreators.totalPages gt 0}">
+        <ul class="pagination justify-content-center font-weight-bold">
+          <li class="page-item" th:classappend="${filmCreators.number eq 0} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/filmCreators?page={id}(id=${filmCreators.number lt 2 ? 1 : filmCreators.number})}"
+               aria-label="Previous" title="Предыдущая страница" data-toggle="tooltip">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" th:classappend="${i eq filmCreators.number + 1} ? 'active'"
+              th:each="i : ${#numbers.sequence(1, filmCreators.totalPages, 1)}">
+            <a class="page-link" th:href="@{/filmCreators?page={id}(id=${i})}" th:text="${i}"
+               th:title="${'Страница '+ i}" data-toggle="tooltip"></a>
+          </li>
+          <li class="page-item" th:classappend="${filmCreators.number eq filmCreators.totalPages - 1} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/filmCreators?page={id}(id=${filmCreators.number + 2})}"
+               aria-label="Next" title="Следующая страница" data-toggle="tooltip">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+</body>
+
+</html>

@@ -16,7 +16,7 @@ public class OpenAPIConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("Билетная касса кинотеатра")
-                        .description("Сервис, позволяющий осуществить онлайн покупку билета в кинотеатр.")
+                        .description("Сервис, позволяющий осуществить бронирование/покупку билета в кинотеатр.")
                         .version("v0.1")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org"))
                         .contact(new Contact().name("Vasya Pupkin")

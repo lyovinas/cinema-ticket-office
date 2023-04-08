@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Результаты</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="col-6 mx-auto">
+    <h2 class="mt-3">Результаты продаж билетов</h2>
+    <hr class="hr"/>
+    <form class="needs-validation" method="POST" th:action="@{/orders/results}" th:object="${datePeriodForm}">
+        <h5 class="mt-4">Вывести результаты за период:</h5>
+        <div class="row g-2 align-items-center">
+            <div class="col-md-1">
+                <h6 class="ms-2 mb-0">С:</h6>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input name="startDate" type="date" class="form-control" id="startDate" required>
+                    <label for="startDate">Начальная дата</label>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <h6 class="ms-2 mb-0">по:</h6>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input name="endDate" type="date" class="form-control" id="endDate" required>
+                    <label for="endDate">Конечная дата</label>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3 row g-2">
+            <button type="submit" class="btn btn-secondary">Отобразить</button>
+        </div>
+    </form>
+    <table th:if="${totalCost} != null" class="table table-hover mt-5">
+        <thead>
+        <tr>
+            <th scope="col">Количетсво билетов</th>
+            <th scope="col">Общая стоимость</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${totalTickets}"></td>
+            <td th:text="${totalCost}"></td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+</body>
+
+</html>

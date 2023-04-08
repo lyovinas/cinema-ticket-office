@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Изменение профиля</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+  <h1>Редактировать профиль</h1>
+  <form method="POST" th:action="@{/users/profile/update}" th:object="${userForm}" style="margin: 0 auto">
+    <input type="hidden" name="id" th:value="${user.id}">
+    <div class="row">
+      <div class="col-auto mb-3">
+        <label for="login" class="form-label">Логин</label>
+        <input th:value="${user.login}" name="login" type="text" class="form-control" id="login" required>
+      </div>
+      <div class="col-auto mb-3">
+        <label for="email" class="form-label">Почта</label>
+        <input th:value="${user.email}" name="email" type="email" class="form-control" id="email" required>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-auto mb-3">
+        <label for="firstName" class="form-label">Имя</label>
+        <input th:value="${user.firstName}" name="firstName" type="text" class="form-control" id="firstName" required>
+      </div>
+      <div class="col-auto mb-3">
+        <label for="lastName" class="form-label">Фамилия</label>
+        <input th:value="${user.lastName}" name="lastName" type="text" class="form-control" id="lastName" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-auto mb-3">
+        <label for="birthDate" class="form-label">Дата Рождения</label>
+        <input th:value="${user.birthDate}" name="birthDate" type="date" class="form-control" id="birthDate" required>
+      </div>
+      <div class="col-auto mb-3">
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <button type="button" class="btn btn-secondary" onclick="window.history.back()">Назад</button>
+  </form>
+</div>
+</body>
+
+</html>

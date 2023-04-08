@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Мои заказы</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="mt-5">
+        <h2>Список моих заказов</h2>
+        <div>
+            <table class="table table-hover mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">Идентификатор</th>
+                    <th scope="col">Дата/время создания</th>
+                    <th scope="col">Название фильма</th>
+                    <th scope="col">Стоимость</th>
+                    <th scope="col">Статус</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orders}">
+                    <td>
+                        <a class="text-link text-blue" th:href="'/orders/' + ${order.orderId}" th:text="${order.orderId}"></a>
+                    </td>
+                    <td th:text="${#temporals.format(order.orderCreatedWhen, 'dd.MM.yyyy hh:mm')}"></td>
+                    <td th:text="${order.filmTitle}"></td>
+                    <td th:text="${order.cost}"></td>
+                    <td th:text="${order.purchase ? 'Покупка' : 'Бронирование'}"></td>
+                    <td>
+<!--                        <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">-->
+                        <div>
+<!--                            <a class="btn btn-sm btn-outline-success" th:href="'/orders/update/' + ${order.id}" style="float: right">Редактировать</a>-->
+                            <a th:if="${!order.purchase}" class="btn btn-sm btn-outline-danger" th:href="'/orders/delete/' + ${order.orderId}"
+                               onclick="return confirm('Вы действительно хотите отменить бронирование?');" style="float: right">Отменить</a>
+<!--                            <a th:if="${order.isDeleted()}" class="btn btn-sm btn-outline-warning" th:href="'/orders/restore/' + ${order.orderId}" style="float: right">Восстановить</a>-->
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <nav aria-label="Pagination" th:if="${orders.totalPages gt 0}">
+                <ul class="pagination justify-content-center font-weight-bold">
+                    <li class="page-item" th:classappend="${orders.number eq 0} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/orders/user/{userId}?page={id}(id=${orders.number lt 2 ? 1 : orders.number}, userId=${userId})}"
+                           aria-label="Previous" title="Предыдущая страница" data-toggle="tooltip">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:classappend="${i eq orders.number + 1} ? 'active'"
+                        th:each="i : ${#numbers.sequence( 1, orders.totalPages, 1)}">
+                        <a class="page-link" th:href="@{/orders/user/{userId}?page={id}(id=${i}, userId=${userId})}" th:text="${i}"
+                           th:title="${'Страница '+ i}" data-toggle="tooltip"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${orders.number eq orders.totalPages - 1} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/orders/user/{userId}?page={id}(id=${orders.number + 2}, userId=${userId})}"
+                           aria-label="Next" title="Следующая страница" data-toggle="tooltip">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

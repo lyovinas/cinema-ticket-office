@@ -1,52 +1,59 @@
 package ru.sbercourse.cinema.ticketoffice.mapper;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.sbercourse.cinema.ticketoffice.dto.OrderDto;
+import ru.sbercourse.cinema.ticketoffice.dto.OrderDTO;
 import ru.sbercourse.cinema.ticketoffice.model.FilmSession;
 import ru.sbercourse.cinema.ticketoffice.model.Order;
-import ru.sbercourse.cinema.ticketoffice.model.Placement;
+import ru.sbercourse.cinema.ticketoffice.model.Seat;
 import ru.sbercourse.cinema.ticketoffice.model.User;
 import ru.sbercourse.cinema.ticketoffice.repository.FilmSessionRepository;
-import ru.sbercourse.cinema.ticketoffice.repository.PlacementRepository;
+import ru.sbercourse.cinema.ticketoffice.repository.SeatRepository;
 import ru.sbercourse.cinema.ticketoffice.repository.UserRepository;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Component
-public class OrderMapper extends GenericMapper<Order, OrderDto> implements ConverterForSpecificFields<Order, OrderDto>{
+public class OrderMapper extends GenericMapper<Order, OrderDTO>
+        implements ConverterForSpecificFields<Order, OrderDTO>{
 
     private UserRepository userRepository;
     private FilmSessionRepository filmSessionRepository;
-    private PlacementRepository placementRepository;
+    private SeatRepository seatRepository;
 
 
 
     public OrderMapper() {
-        super(Order.class, OrderDto.class);
+        super(Order.class, OrderDTO.class);
     }
 
 
 
+    @PostConstruct
     @Override
     public void setupMapper() {
-        modelMapper.createTypeMap(Order.class, OrderDto.class)
+        modelMapper.createTypeMap(Order.class, OrderDTO.class)
                 .addMappings(m -> {
-                    m.skip(OrderDto::setUserId);
-                    m.skip(OrderDto::setFilmSessionId);
-                    m.skip(OrderDto::setPlacementId);
+                    m.skip(OrderDTO::setUserId);
+                    m.skip(OrderDTO::setFilmSessionId);
+                    m.skip(OrderDTO::setSeatIds);
                 })
                 .setPostConverter(toDtoConverter());
 
-        modelMapper.createTypeMap(OrderDto.class, Order.class)
+        modelMapper.createTypeMap(OrderDTO.class, Order.class)
                 .addMappings(m -> {
                     m.skip(Order::setUser);
                     m.skip(Order::setFilmSession);
-                    m.skip(Order::setPlacement);
+                    m.skip(Order::setSeats);
                 })
                 .setPostConverter(toEntityConverter());
     }
 
     @Override
-    public void mapSpecificFields(OrderDto source, Order destination) {
+    public void mapSpecificFields(OrderDTO source, Order destination) {
         Long userId = source.getUserId();
         if (userId != null) {
             destination.setUser(userRepository.findById(userId).orElse(null));
@@ -57,14 +64,14 @@ public class OrderMapper extends GenericMapper<Order, OrderDto> implements Conve
             destination.setFilmSession(filmSessionRepository.findById(filmSessionId).orElse(null));
         } else destination.setFilmSession(null);
 
-        Long placementId = source.getPlacementId();
-        if (placementId != null) {
-            destination.setPlacement(placementRepository.findById(placementId).orElse(null));
-        } else destination.setPlacement(null);
+        Set<Long> seatIds = source.getSeatIds();
+        if (seatIds != null) {
+            destination.setSeats(new HashSet<>(seatRepository.findAllById(seatIds)));
+        } else destination.setSeats(null);
     }
 
     @Override
-    public void mapSpecificFields(Order source, OrderDto destination) {
+    public void mapSpecificFields(Order source, OrderDTO destination) {
         Long userId = null;
         User user = source.getUser();
         if (user != null) {
@@ -79,12 +86,12 @@ public class OrderMapper extends GenericMapper<Order, OrderDto> implements Conve
         }
         destination.setFilmSessionId(filmSessionId);
 
-        Long placementId = null;
-        Placement placement = source.getPlacement();
-        if (placement != null) {
-            placementId = placement.getId();
+        Set<Long> seatIds = null;
+        Set<Seat> seats = source.getSeats();
+        if (seats != null) {
+            seatIds = seats.stream().map(Seat::getId).collect(Collectors.toSet());
         }
-        destination.setPlacementId(placementId);
+        destination.setSeatIds(seatIds);
     }
 
 
@@ -100,7 +107,7 @@ public class OrderMapper extends GenericMapper<Order, OrderDto> implements Conve
     }
 
     @Autowired
-    public void setPlacementRepository(PlacementRepository placementRepository) {
-        this.placementRepository = placementRepository;
+    public void setSeatRepository(SeatRepository seatRepository) {
+        this.seatRepository = seatRepository;
     }
 }

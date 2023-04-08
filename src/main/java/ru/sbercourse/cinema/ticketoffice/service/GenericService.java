@@ -1,38 +1,49 @@
 package ru.sbercourse.cinema.ticketoffice.service;
 
-import ru.sbercourse.cinema.ticketoffice.dto.GenericDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import ru.sbercourse.cinema.ticketoffice.dto.GenericDTO;
 import ru.sbercourse.cinema.ticketoffice.mapper.Mapper;
 import ru.sbercourse.cinema.ticketoffice.model.GenericModel;
 import ru.sbercourse.cinema.ticketoffice.repository.GenericRepository;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-public abstract class GenericService<E extends GenericModel, D extends GenericDto> {
+import static ru.sbercourse.cinema.ticketoffice.constants.UserRolesConstants.ADMIN;
+
+public abstract class GenericService<E extends GenericModel, D extends GenericDTO> {
 
     protected GenericRepository<E> repository;
     protected Mapper<E, D> mapper;
 
 
 
-    public Set<D> getAll() {
-        return mapper.toDtos(new HashSet<>(repository.findAll()));
+    public List<D> getAll() {
+        return mapper.toDTOs(repository.findAll());
+    }
+
+    public Page<D> getAll(Pageable pageable) {
+        Page<E> page = repository.findAll(pageable);
+        List<D> result = mapper.toDTOs(page.getContent());
+        return new PageImpl<>(result, pageable, page.getTotalElements());
     }
 
     public D getById(Long id) {
-        return mapper.toDto(repository.findById(id).orElse(null));
+        return mapper.toDTO(repository.findById(id).orElse(null));
     }
 
     public D create(D DTO) {
+        if (DTO == null) return null;
         E entity = mapper.toEntity(DTO);
         Long entityId = entity.getId();
         if (entityId != null && repository.existsById(entityId)) {
             return null;
         }
-        entity.setCreatedBy("ADMIN");
+        entity.setCreatedBy(ADMIN);
         entity.setCreatedWhen(LocalDateTime.now());
-        return mapper.toDto(repository.save(entity));
+        return mapper.toDTO(repository.save(entity));
     }
 
     public D update(Long id, D DTO) {
@@ -44,13 +55,18 @@ public abstract class GenericService<E extends GenericModel, D extends GenericDt
                 entity.setId(id);
                 entity.setCreatedWhen(existingEntity.getCreatedWhen());
                 entity.setCreatedBy(existingEntity.getCreatedBy());
-                return mapper.toDto(repository.save(entity));
+                entity.setDeleted(existingEntity.isDeleted());
+                entity.setDeletedWhen(existingEntity.getDeletedWhen());
+                entity.setDeletedBy(existingEntity.getDeletedBy());
+                entity.setUpdatedWhen(LocalDateTime.now());
+                entity.setUpdatedBy(ADMIN);
+                return mapper.toDTO(repository.save(entity));
             }
         }
         return null;
     }
 
-    public boolean deleteById(Long id) {
+    public boolean delete(Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
             return true;
@@ -58,15 +74,23 @@ public abstract class GenericService<E extends GenericModel, D extends GenericDt
         return false;
     }
 
-
-
-    public void setRepository(GenericRepository<E> repository) {
-        this.repository = repository;
+    public void softDelete(Long id) {
+        D DTO = getById(id);
+        DTO.setDeleted(true);
+        DTO.setDeletedBy(ADMIN);
+        DTO.setDeletedWhen(LocalDateTime.now());
+        repository.save(mapper.toEntity(DTO));
     }
 
-    public void setMapper(Mapper<E, D> mapper) {
-        this.mapper = mapper;
+    public void restore(Long id) {
+        D DTO = getById(id);
+        DTO.setDeleted(false);
+        DTO.setDeletedBy(null);
+        DTO.setDeletedWhen(null);
+        repository.save(mapper.toEntity(DTO));
     }
+
+
 
     public Mapper<E, D> getMapper() {
         return mapper;

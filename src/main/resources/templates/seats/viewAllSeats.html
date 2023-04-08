@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Места в кинозале</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+  <div>
+    <hr class="hr"/>
+    <form class="needs-validation" method="POST" th:action="@{/seats/search}" th:object="${seatsSearchForm}">
+      <div class="mt-0 row g-2">
+        <div class="col-md-3">
+            <h4>Поиск:</h4>
+        </div>
+        <div class="col-md">
+          <div class="form-floating">
+            <input name="row" type="number" min="1" class="form-control" id="rowSearch">
+            <label for="rowSearch">Ряд</label>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="form-floating">
+            <input name="place" type="number" min="1" class="form-control" id="placeSearch">
+            <label for="placeSearch">Место</label>
+          </div>
+        </div>
+        <div class="row g-2">
+          <button type="submit" class="btn btn-secondary">Найти места</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div>
+    <hr class="mt-3 hr"/>
+    <form class="needs-validation" method="POST" th:action="@{/seats/add}" th:object="${seatForm}">
+      <div class="mt-3 row g-2">
+          <div class="col-md-3">
+              <h4>Добавить:</h4>
+          </div>
+          <div class="col-md">
+              <div class="form-floating">
+                  <input name="row" type="number" min="1" class="form-control" id="rowAdd" required>
+                  <label for="rowAdd">Ряд</label>
+              </div>
+          </div>
+          <div class="col-md">
+              <div class="form-floating">
+                  <input name="place" type="number" min="1" class="form-control" id="placeAdd" required>
+                  <label for="placeAdd">Место</label>
+              </div>
+          </div>
+          <div class="row g-2">
+              <button type="submit" class="btn btn-secondary">Добавить место</button>
+          </div>
+      </div>
+    </form>
+  </div>
+  <hr class="mt-3 hr"/>
+  <div class="mt-5">
+    <div class="row">
+      <div class="col">
+        <h2>Все места</h2>
+      </div>
+    </div>
+
+    <div>
+      <table class="table table-hover mt-3">
+        <thead>
+        <tr>
+          <th scope="col">Ряд</th>
+          <th scope="col">Место</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="seat : ${seats}">
+          <td th:text="${seat.row}"></td>
+          <td th:text="${seat.place}"></td>
+          <td>
+<!--            <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">-->
+            <div>
+              <a class="btn btn-sm btn-outline-success" th:href="'/seats/update/' + ${seat.id}" style="float: right">Редактировать</a>
+              <a th:if="${!seat.isDeleted()}" class="btn btn-sm btn-outline-danger" th:href="'/seats/delete/' + ${seat.id}"
+                 onclick="return confirm('Вы действительно хотите удалить место?');" style="float: right">Удалить</a>
+              <a th:if="${seat.isDeleted()}" class="btn btn-sm btn-outline-warning" th:href="'/seats/restore/' + ${seat.id}" style="float: right">Восстановить</a>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <nav aria-label="Pagination" th:if="${seats.totalPages gt 0}">
+        <ul class="pagination justify-content-center font-weight-bold">
+          <li class="page-item" th:classappend="${seats.number eq 0} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/seats?page={id}(id=${seats.number lt 2 ? 1 : seats.number})}"
+               aria-label="Previous" title="Предыдущая страница" data-toggle="tooltip">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" th:classappend="${i eq seats.number + 1} ? 'active'"
+              th:each="i : ${#numbers.sequence(1, seats.totalPages, 1)}">
+            <a class="page-link" th:href="@{/seats?page={id}(id=${i})}" th:text="${i}"
+               th:title="${'Страница '+ i}" data-toggle="tooltip"></a>
+          </li>
+          <li class="page-item" th:classappend="${seats.number eq seats.totalPages - 1} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/seats?page={id}(id=${seats.number + 2})}"
+               aria-label="Next" title="Следующая страница" data-toggle="tooltip">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>О фильме</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="card mb-3">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="/img/bttf.jpg" class="img-fluid rounded-start" alt="" style="max-height: 540px;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title mt-3 mb-4" th:text="${film.title}"></h5>
+                    <p class="card-text"><span class="text-muted">Жанр: </span><span th:text="${film.genre.text}"></span></p>
+                    <p class="card-text"><span class="text-muted">Год выхода: </span><span th:text="${film.releaseYear}"></span></p>
+                    <p class="card-text mb-4"><span class="text-muted">Страна производства: </span><span th:text="${film.country}"></span></p>
+                    <p class="card-text" th:each="filmCreator : ${film.filmCreators}">
+                        <span th:text="${filmCreator.position} + ': ' + ${filmCreator.fullName}"></span>
+                    </p>
+                    <p class="card-text mt-5" th:text="${film.description}"></p>
+<!--                    <p class="card-text mt-5">-->
+<!--                        <label for="description">Описание</label>-->
+<!--                        <textarea type="text" class="form-control" id="description" rows="10" th:text="${film.description}"></textarea>-->
+<!--                    </p>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <hr class="mt-3 hr"/>
+        <div class="row g-2">
+            <a class="btn btn-secondary" th:href="'/films/update/' + ${film.id}">Редактировать фильм</a>
+        </div>
+    </div>
+    <hr class="hr"/>
+    <h3 class="mt-3 mb-3">Сеансы:</h3>
+    <table class="table table-hover mt-3">
+        <thead>
+        <tr>
+            <th scope="col">Дата:</th>
+            <th scope="col">Время:</th>
+            <th scope="col">Цена билета:</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="filmSession : ${film.getFilmSessions()}">
+            <td th:text="${filmSession.startDate}"></td>
+            <td>
+                <a class="text-link text-blue"
+                   th:href="@{/seats/selectSeat(filmSessionId=${filmSession.id})}"
+                   th:text="${filmSession.startTime}"></a>
+            </td>
+            <td th:text="${filmSession.price}"></td>
+            <td>
+                <a class="btn btn-sm btn-outline-success" th:href="'/filmSessions/update/' + ${filmSession.getId()}" style="float: right">Редактировать</a>
+                <a th:if="${!filmSession.isDeleted()}" class="btn btn-sm btn-outline-danger" th:href="'/filmSessions/delete/' + ${filmSession.getId()}"
+                   onclick="return confirm('Вы действительно хотите удалить сеанс?');" style="float: right">Удалить</a>
+                <a th:if="${filmSession.isDeleted()}" class="btn btn-sm btn-outline-warning" th:href="'/filmSessions/restore/' + ${filmSession.getId()}" style="float: right">Восстановить</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div>
+<!--        <hr class="mt-3 hr"/>-->
+        <form class="needs-validation" method="POST" th:action="@{/filmSessions/add}" th:object="${filmSessionForm}">
+            <input type="hidden" name="filmId" th:value="${film.id}">
+            <div class="mt-3 row g-2 align-items-center">
+                <div class="col-md-2">
+                    <h5 class="ms-2">Добавить сеанс:</h5>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input name="startDate" type="date" class="form-control" id="startDate" required>
+                        <label for="startDate">Дата</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input name="startTime" type="time" class="form-control" id="startTime" required>
+                        <label for="startTime">Время</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input name="price" type="number" min="0" class="form-control" id="price" required>
+                        <label for="price">Цена</label>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-2 row g-2">
+                <button type="submit" class="btn btn-secondary">Добавить сеанс</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

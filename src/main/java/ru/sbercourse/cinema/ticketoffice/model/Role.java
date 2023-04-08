@@ -24,4 +24,11 @@ public class Role{
 
     @Column(name = "description")
     private String description;
+
+
+
+    public Role(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
 }

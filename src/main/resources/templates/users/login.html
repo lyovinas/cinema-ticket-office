@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Вход</title>
+</head>
+
+<body>
+<div layout:fragment="content" class="container-fluid mt-5">
+  <form method="POST" th:action="@{/login}">
+    <div th:if="${param.error}">
+      <div class="alert alert-danger">
+        <p style="float: bottom">Неверный логин/пароль</p>
+      </div>
+    </div>
+    <div class="form-group col-md-3 offset-md-4 m-auto">
+      <p class="h2" style="text-align:center">Вход на сайт кинотеатра</p>
+    </div>
+    <div class="form-group col-md-2 offset-md-4 m-auto">
+      <input name="username" type="text" class="form-control" id="inputUsername"
+             placeholder="Имя пользователя"
+             aria-describedby="usernameHelp"/>
+      <label for="inputUsername"></label>
+      <small id="usernameHelp" class="form-text text-muted">Введите имя пользователя</small>
+    </div>
+    <div class="form-group col-md-2 offset-md-4 m-auto">
+      <input name="password" type="password" class="form-control" id="inputPassword"
+             placeholder="Пароль">
+      <label for="inputPassword"></label>
+      <small id="passwordHelp" class="form-text text-muted">Введите пароль</small>
+    </div>
+    <div class="form-group col-md-3 offset-md-4 m-auto">
+      <button type="submit" class="btn btn-success offset-md-5">Войти</button>
+      <div class="mt-1">
+        <a class="offset-md-3 text-link" href="/users/registration">Зарегистрироваться</a>
+        <a class="offset-md-3 text-link" href="/users/remember-password">Забыли пароль?</a>
+      </div>
+    </div>
+  </form>
+</div>
+</body>
+
+</html>

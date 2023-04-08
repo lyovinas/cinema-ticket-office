@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Изменить сеанс</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+  <form class="needs-validation" method="POST" th:action="@{/filmSessions/update}" th:object="${filmSessionForm}">
+    <h3 class="mt-3 mb-3" th:text="'Изменить сеанс фильма: ' + ${filmTitle}"></h3>
+    <input type="hidden" name="id" th:value="${filmSession.id}">
+    <input type="hidden" name="filmId" th:value="${filmSession.filmId}">
+    <div class="mt-3 row g-2">
+      <div class="col-md">
+        <div class="form-floating">
+          <input name="startDate" th:value="${filmSession.startDate}" type="date" class="form-control" id="startDate" required>
+          <label for="startDate">Дата сеанса</label>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="form-floating">
+          <input name="startTime" th:value="${filmSession.startTime}" type="time" class="form-control" id="startTime" required>
+          <label for="startTime">Время начала</label>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="form-floating">
+          <input name="price" th:value="${filmSession.price}" type="number" min="0" class="form-control" id="price" required>
+          <label for="price">Цена</label>
+        </div>
+      </div>
+    </div>
+    <div class="mt-3 row g-2">
+      <button type="submit" class="btn btn-primary">Обновить</button>
+      <button type="button" class="btn btn-secondary" onclick="window.history.back()">Назад</button>
+    </div>
+  </form>
+</div>
+</body>
+
+</html>

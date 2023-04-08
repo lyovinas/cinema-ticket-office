@@ -1,17 +1,15 @@
 package ru.sbercourse.cinema.ticketoffice.mapper;
 
-import ru.sbercourse.cinema.ticketoffice.dto.GenericDto;
+import ru.sbercourse.cinema.ticketoffice.dto.GenericDTO;
 import ru.sbercourse.cinema.ticketoffice.model.GenericModel;
 
-import java.util.Set;
+import java.util.List;
 
-public interface Mapper<E extends GenericModel, D extends GenericDto> {
+public interface Mapper<E extends GenericModel, D extends GenericDTO> {
 
   E toEntity(D dto);
 
-//  List<E> toEntities(List<D> dtos);
+  D toDTO(E entity);
 
-  D toDto(E entity);
-
-  Set<D> toDtos(Set<E> entities);
+  List<D> toDTOs(List<E> entities);
 }

@@ -33,13 +33,20 @@ public class Film extends GenericModel{
     @Enumerated
     private Genre genre;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "films_creators",
-            joinColumns = @JoinColumn(name = "film_id"), foreignKey = @ForeignKey(name = "fk_films_creators"),
-            inverseJoinColumns = @JoinColumn(name = "creator_id"), inverseForeignKey = @ForeignKey(name = "fk_creators_films"))
-    private Set<Creator> creators;
+    @Column(name = "description", nullable = false)
+    private String description;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "films_film_creators",
+            joinColumns = @JoinColumn(name = "film_id"), foreignKey = @ForeignKey(name = "fk_films_film_creators"),
+            inverseJoinColumns = @JoinColumn(name = "film_creator_id"), inverseForeignKey = @ForeignKey(name = "fk_film_creators_films"))
+    private Set<FilmCreator> filmCreators;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "film")
     private Set<FilmSession> filmSessions;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "film")
+    private Set<Review> reviews;
 }

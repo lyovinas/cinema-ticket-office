@@ -12,18 +12,8 @@ public enum Genre {
         this.text = text;
     }
 
-    public String getText() {
+    public String getText() {//TODO удалить, если не используется
         return text;
     }
 
-    public static Genre getByText(String text) {
-        Genre foundGenre = null;
-        for (Genre genre : values()) {
-            if (genre.getText().equals(text)) {
-                foundGenre = genre;
-                break;
-            }
-        }
-        return foundGenre;
-    }
 }

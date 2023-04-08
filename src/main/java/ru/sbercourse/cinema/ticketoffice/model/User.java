@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -26,6 +27,9 @@ public class User extends GenericModel{
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @Column(name = "birth_date", nullable = false)
+    private LocalDate birthDate;
+
     @Column(name = "email", nullable = false)
     private String email;
 
@@ -43,4 +47,9 @@ public class User extends GenericModel{
     @OneToMany(mappedBy = "user", orphanRemoval = true,
             cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Order> orders;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", orphanRemoval = true,
+            cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    private Set<Review> reviews;
 }

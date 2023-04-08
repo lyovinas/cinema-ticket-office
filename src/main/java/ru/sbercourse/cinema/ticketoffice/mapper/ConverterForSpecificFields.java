@@ -2,10 +2,10 @@ package ru.sbercourse.cinema.ticketoffice.mapper;
 
 import jakarta.annotation.PostConstruct;
 import org.modelmapper.Converter;
-import ru.sbercourse.cinema.ticketoffice.dto.GenericDto;
+import ru.sbercourse.cinema.ticketoffice.dto.GenericDTO;
 import ru.sbercourse.cinema.ticketoffice.model.GenericModel;
 
-interface ConverterForSpecificFields<E extends GenericModel, D extends GenericDto> {
+interface ConverterForSpecificFields<E extends GenericModel, D extends GenericDTO> {
 
     default Converter<D, E> toEntityConverter() {
         return context -> {

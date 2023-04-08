@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Просмотр профиля</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+  <h1>Профиль</h1>
+<!--  <div sec:authorize="isAuthenticated()" th:if="${#authentication.getPrincipal().getUserId()} == ${user.id}">-->
+    <p>Логин: <span th:text="${user.login}"></span></p>
+    <p>Почта: <span th:text="${user.email}"></span></p>
+    <p>Дата рождения: <span th:text="${user.birthDate}"></span></p>
+<!--  </div>-->
+    <p>Имя: <span th:text="${user.firstName}"></span></p>
+    <p>Фамилия: <span th:text="${user.lastName}"></span></p>
+<!--  <a sec:authorize="isAuthenticated() && !(hasRole('ADMIN'))"-->
+  <a th:href="'/users/profile/update/' + ${user.id}" class="btn btn-primary" role="button"
+      aria-disabled="true">Редактировать</a>
+<!--      th:if="${#authentication.getPrincipal().getUserId()} == ${user.id}" aria-disabled="true">Редактировать</a>-->
+</div>
+</body>
+
+</html>

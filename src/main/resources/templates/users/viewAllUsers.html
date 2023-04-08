@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Пользователи</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+  <h1>Пользователи сервиса</h1>
+  <div class="row">
+    <div class="col">
+<!--      <a  sec:authorize="hasRole('ADMIN')"-->
+      <a href="/users/add-manager" class="btn btn-secondary" role="button" style="float: right"
+          aria-disabled="true">Добавить управляющего</a>
+    </div>
+  </div>
+  <h4>Поиск</h4>
+  <!--  <div class="row">-->
+  <!--    <div class="col">-->
+  <!--      <form method="POST" th:action="@{/users/search}" th:object="${userSearchForm}">-->
+  <!--        <div class="row">-->
+  <!--          <div class="col-auto">-->
+  <!--            <label for="login" class="col-form-label">Логин</label>-->
+  <!--          </div>-->
+  <!--          <div class="col-auto">-->
+  <!--            <input name="login" type="text" class="form-control" id="login">-->
+  <!--          </div>-->
+  <!--          <div class="col-auto">-->
+  <!--            <label for="firstName" class="col-form-label">Имя</label>-->
+  <!--          </div>-->
+  <!--          <div class="col-auto">-->
+  <!--            <input name="firstName" type="text" class="form-control" id="firstName">-->
+  <!--          </div>-->
+  <!--          <div class="col-auto">-->
+  <!--            <label for="lastName" class="col-form-label">Фамилия</label>-->
+  <!--          </div>-->
+  <!--          <div class="col-auto">-->
+  <!--            <input name="lastName" type="text" class="form-control" id="lastName">-->
+  <!--          </div>-->
+
+  <!--          <div class="col-auto">-->
+  <!--            <button type="submit" class="btn btn-primary">Поиск</button>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      </form>-->
+  <!--    </div>-->
+  <!--  </div>-->
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Логин</th>
+        <th scope="col">Имя</th>
+        <th scope="col">Фамилия</th>
+        <th scope="col">Почта</th>
+        <th scope="col">Дата рождения</th>
+        <th scope="col">Заблокирован</th>
+        <th scope="col">Роль</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="user: ${users}">
+        <td th:text="${user.login}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.birthDate}"></td>
+        <td th:text="${user.isDeleted() ? 'Да' : 'Нет'}"></td>
+        <td th:text="${user.role.description}"></td>
+        <td>
+          <a
+              th:if="${!user.isDeleted()}"
+              th:href="'/users/ban/' + ${user.id}"
+              class="btn btn-danger"
+              role="button"
+              onclick="return confirm('Вы действительно хотите заблокировать пользователя?');"
+              aria-disabled="true">Заблокировать</a>
+          <a
+              th:if="${user.isDeleted()}"
+              th:href="'/users/unban/' + ${user.id}"
+              class="btn btn-success"
+              role="button"
+              onclick="return confirm('Вы действительно хотите разблокировать пользователя?');"
+              aria-disabled="true">Разблокировать</a>
+          <a
+              th:href="'/users/profile/' + ${user.id}"
+              class="btn btn-primary"
+              role="button"
+              aria-disabled="true">Просмотреть</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <nav aria-label="Pagination" th:if="${users.totalPages gt 0}">
+    <ul class="pagination justify-content-center font-weight-bold">
+      <li class="page-item" th:classappend="${users.number eq 0} ? 'disabled'">
+        <a class="page-link"
+           th:href="@{/users?page={id}(id=${users.number lt 2 ? 1 : users.number})}"
+           aria-label="Previous" title="Предыдущая страница" data-toggle="tooltip">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item" th:classappend="${i eq users.number + 1} ? 'active'"
+          th:each="i : ${#numbers.sequence( 1, users.totalPages, 1)}">
+        <a class="page-link" th:href="@{/users?page={id}(id=${i})}" th:text="${i}"
+           th:title="${'Страница '+ i}" data-toggle="tooltip"></a>
+      </li>
+      <li class="page-item" th:classappend="${users.number eq users.totalPages - 1} ? 'disabled'">
+        <a class="page-link"
+           th:href="@{/users?page={id}(id=${users.number + 1})}"
+           aria-label="Next" title="Следующая страница" data-toggle="tooltip">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+</body>
+
+</html>

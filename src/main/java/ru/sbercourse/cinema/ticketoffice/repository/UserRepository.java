@@ -5,4 +5,8 @@ import ru.sbercourse.cinema.ticketoffice.model.User;
 
 @Repository
 public interface UserRepository extends GenericRepository<User> {
+
+    User getByLogin(String login);
+
+    User getByEmail(String email);
 }

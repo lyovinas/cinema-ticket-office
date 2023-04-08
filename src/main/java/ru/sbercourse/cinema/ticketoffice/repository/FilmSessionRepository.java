@@ -11,7 +11,7 @@ import java.util.Set;
 public interface FilmSessionRepository extends GenericRepository<FilmSession> {
 
     @Query(value = "select * from film_sessions where start between ?1 and ?2", nativeQuery = true)
-    Set<FilmSession> getByDatePeriod(LocalDateTime start, LocalDateTime end);
+    Set<FilmSession> getByPeriod(LocalDateTime start, LocalDateTime end);
 
     @Query(value = "select * from film_sessions where start >= now()", nativeQuery = true)
     Set<FilmSession> getActual();
