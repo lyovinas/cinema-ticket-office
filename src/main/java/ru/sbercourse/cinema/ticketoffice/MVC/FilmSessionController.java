@@ -25,7 +25,7 @@ public class FilmSessionController {
     @PostMapping("/add")
     public String create(@ModelAttribute("filmSessionForm") FilmSessionDTO filmSessionDTO) {
         filmSessionService.create(filmSessionDTO);
-        return "redirect:/films/" + filmSessionDTO.getFilmId();
+        return "redirect:/films/get/" + filmSessionDTO.getFilmId();
     }
 
     @GetMapping("/delete/{id}")
@@ -51,8 +51,8 @@ public class FilmSessionController {
 
     @PostMapping("/update")
     public String update(@ModelAttribute("filmSessionForm") FilmSessionDTO filmSessionDTO) {
-        filmSessionService.update(filmSessionDTO.getId(), filmSessionDTO);
-        return "redirect:/films/" + filmSessionDTO.getFilmId();
+        filmSessionService.update(filmSessionDTO);
+        return "redirect:/films/get/" + filmSessionDTO.getFilmId();
     }
 
 //    @PostMapping("/search")

@@ -1,6 +1,8 @@
 package ru.sbercourse.cinema.ticketoffice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sbercourse.cinema.ticketoffice.dto.UserDTO;
 import ru.sbercourse.cinema.ticketoffice.mapper.UserMapper;
@@ -19,6 +21,7 @@ import static ru.sbercourse.cinema.ticketoffice.constants.UserRolesConstants.USE
 public class UserService extends GenericService<User, UserDTO> {
 
     private RoleService roleService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
 
@@ -36,27 +39,26 @@ public class UserService extends GenericService<User, UserDTO> {
             userRole = roleService.create(new Role(USER, "Пользователь"));
         }
         userDTO.setRole(userRole);
+        userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         return super.create(userDTO);
     }
 
     @Override
-    public UserDTO update(Long id, UserDTO userDTO) {
-        UserDTO foundUser = getById(userDTO.getId());
+    public UserDTO update(UserDTO userDTO) {
+        User foundUser = repository.findById(userDTO.getId()).orElse(null);
 
-        userDTO.setCreatedWhen(foundUser.getCreatedWhen());
-        userDTO.setCreatedBy(foundUser.getCreatedBy());
-        userDTO.setDeleted(foundUser.isDeleted());
-        userDTO.setDeletedWhen(foundUser.getDeletedWhen());
-        userDTO.setDeletedBy(foundUser.getDeletedBy());
-        userDTO.setUpdatedWhen(LocalDateTime.now());
-        userDTO.setUpdatedBy(userDTO.getLogin());
+        if (foundUser != null) {
+            foundUser.setFirstName(userDTO.getFirstName());
+            foundUser.setLastName(userDTO.getLastName());
+            foundUser.setBirthDate(userDTO.getBirthDate());
+            foundUser.setEmail(userDTO.getEmail());
+            foundUser.setLogin(userDTO.getLogin());
+            foundUser.setUpdatedWhen(LocalDateTime.now());
+            foundUser.setUpdatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+            return mapper.toDTO(repository.save(foundUser));
+        }
 
-        userDTO.setPassword(foundUser.getPassword());
-        userDTO.setRole(foundUser.getRole());
-        userDTO.setOrdersIds(foundUser.getOrdersIds());
-//        userDTO.setReviews(foundUser.getReviews());
-
-        return super.update(userDTO.getId(), userDTO);
+        return null;
     }
 
     public void createManager(UserDTO userDTO) {
@@ -65,7 +67,7 @@ public class UserService extends GenericService<User, UserDTO> {
             userRole = roleService.create(new Role(MANAGER, "Управляющий"));
         }
         userDTO.setRole(userRole);
-//        userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+        userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         super.create(userDTO);
     }
 
@@ -89,5 +91,10 @@ public class UserService extends GenericService<User, UserDTO> {
     @Autowired
     public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
+    }
+
+    @Autowired
+    public void setbCryptPasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 }

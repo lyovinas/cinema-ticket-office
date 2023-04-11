@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 @Getter
 @Setter
@@ -14,5 +15,5 @@ import java.util.Set;
 public class FilmWithSessionsDTO extends FilmDTO {
 
     @Schema(description = "Сеансы фильма")
-    private Set<FilmSessionDTO> filmSessions;
+    private TreeSet<FilmSessionDTO> filmSessions;
 }

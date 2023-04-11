@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout}">
 
 <head>
@@ -33,7 +34,7 @@
             </div>
         </div>
     </div>
-    <div>
+    <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">
         <hr class="mt-3 hr"/>
         <div class="row g-2">
             <a class="btn btn-secondary" th:href="'/films/update/' + ${film.id}">Редактировать фильм</a>
@@ -52,14 +53,14 @@
         </thead>
         <tbody>
         <tr th:each="filmSession : ${film.getFilmSessions()}">
-            <td th:text="${filmSession.startDate}"></td>
+            <td th:text="${#temporals.format(filmSession.startDate, 'dd.MM.yyyy')}"></td>
             <td>
                 <a class="text-link text-blue"
                    th:href="@{/seats/selectSeat(filmSessionId=${filmSession.id})}"
                    th:text="${filmSession.startTime}"></a>
             </td>
             <td th:text="${filmSession.price}"></td>
-            <td>
+            <td sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">
                 <a class="btn btn-sm btn-outline-success" th:href="'/filmSessions/update/' + ${filmSession.getId()}" style="float: right">Редактировать</a>
                 <a th:if="${!filmSession.isDeleted()}" class="btn btn-sm btn-outline-danger" th:href="'/filmSessions/delete/' + ${filmSession.getId()}"
                    onclick="return confirm('Вы действительно хотите удалить сеанс?');" style="float: right">Удалить</a>
@@ -68,37 +69,56 @@
         </tr>
         </tbody>
     </table>
+    <!--        <hr class="mt-3 hr"/>-->
+    <form class="needs-validation" method="POST" th:action="@{/filmSessions/add}" th:object="${filmSessionForm}"
+          sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">
+        <input type="hidden" name="filmId" th:value="${film.id}">
+        <div class="mt-3 row g-2 align-items-center">
+            <div class="col-md-2">
+                <h5 class="ms-2">Добавить сеанс:</h5>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input name="startDate" type="date" class="form-control" id="startDate" required>
+                    <label for="startDate">Дата</label>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input name="startTime" type="time" class="form-control" id="startTime" required>
+                    <label for="startTime">Время</label>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <input name="price" type="number" min="0" class="form-control" id="price" required>
+                    <label for="price">Цена</label>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2 row g-2">
+            <button type="submit" class="btn btn-secondary">Добавить сеанс</button>
+        </div>
+    </form>
     <div>
-<!--        <hr class="mt-3 hr"/>-->
-        <form class="needs-validation" method="POST" th:action="@{/filmSessions/add}" th:object="${filmSessionForm}">
-            <input type="hidden" name="filmId" th:value="${film.id}">
-            <div class="mt-3 row g-2 align-items-center">
-                <div class="col-md-2">
-                    <h5 class="ms-2">Добавить сеанс:</h5>
-                </div>
-                <div class="col-md">
-                    <div class="form-floating">
-                        <input name="startDate" type="date" class="form-control" id="startDate" required>
-                        <label for="startDate">Дата</label>
-                    </div>
-                </div>
-                <div class="col-md">
-                    <div class="form-floating">
-                        <input name="startTime" type="time" class="form-control" id="startTime" required>
-                        <label for="startTime">Время</label>
-                    </div>
-                </div>
-                <div class="col-md">
-                    <div class="form-floating">
-                        <input name="price" type="number" min="0" class="form-control" id="price" required>
-                        <label for="price">Цена</label>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-2 row g-2">
-                <button type="submit" class="btn btn-secondary">Добавить сеанс</button>
-            </div>
-        </form>
+    </div>
+
+    <hr class="mt-3 hr"/>
+    <h3 class="mt-3 mb-3">Отзывы:</h3>
+    <div class="card mt-2" th:each="review : ${reviews}">
+        <div class="card-body">
+            <h6 class="card-title" th:text="${review.userDTO.firstName}"></h6>
+            <h6 class="card-subtitle mb-2 text-muted" th:text="${#temporals.format(review.createdWhen, 'dd.MM.yyyy HH:mm')}"></h6>
+            <p class="card-text" th:text="${review.content}"></p>
+        </div>
+        <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">
+            <a th:if="${!review.isDeleted()}" class="btn btn-sm btn-outline-danger" th:href="'/reviews/delete/' + ${review.id}"
+               onclick="return confirm('Удалить отзыв?');" style="float: right">Удалить</a>
+            <a th:if="${review.isDeleted()}" class="btn btn-sm btn-outline-warning" th:href="'/reviews/restore/' + ${review.id}" style="float: right">Восстановить</a>
+        </div>
+    </div>
+    <div class="row g-2 mt-2" sec:authorize="!(hasRole('ADMIN') || hasRole('MANAGER'))">
+        <a class="btn btn-outline-success" th:href="'/reviews/add/' + ${film.id}">Оставить отзыв</a>
     </div>
 </div>
 </body>

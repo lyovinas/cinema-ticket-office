@@ -47,11 +47,10 @@ public abstract class GenericRestController<E extends GenericModel, D extends Ge
 
     @Operation(summary = "Изменить существующую запись",
             description = "Позволяет заменить существующую запись на обновленную")
-    @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
+    @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<D> update(@PathVariable("id") @Parameter(description = "Идентификатор записи") Long id,
-                                    @RequestBody D toUpdateDto) {
-        D updatedDto = service.update(id, toUpdateDto);
+    public ResponseEntity<D> update(@RequestBody D toUpdateDto) {
+        D updatedDto = service.update(toUpdateDto);
         return updatedDto != null
                 ? ResponseEntity.ok(updatedDto)
                 : ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();

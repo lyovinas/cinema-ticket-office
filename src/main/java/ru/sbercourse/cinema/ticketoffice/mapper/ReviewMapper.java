@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.sbercourse.cinema.ticketoffice.dto.ReviewDTO;
+import ru.sbercourse.cinema.ticketoffice.dto.UserDTO;
 import ru.sbercourse.cinema.ticketoffice.model.Film;
 import ru.sbercourse.cinema.ticketoffice.model.Review;
 import ru.sbercourse.cinema.ticketoffice.model.User;
@@ -16,6 +17,7 @@ public class ReviewMapper extends GenericMapper<Review, ReviewDTO>
 
     private FilmRepository filmRepository;
     private UserRepository userRepository;
+    private UserMapper userMapper;
 
 
 
@@ -29,7 +31,7 @@ public class ReviewMapper extends GenericMapper<Review, ReviewDTO>
         modelMapper.createTypeMap(Review.class, ReviewDTO.class)
                 .addMappings(m -> {
                     m.skip(ReviewDTO::setFilmId);
-                    m.skip(ReviewDTO::setUserId);
+                    m.skip(ReviewDTO::setUserDTO);
                 })
                 .setPostConverter(toDtoConverter());
 
@@ -48,8 +50,9 @@ public class ReviewMapper extends GenericMapper<Review, ReviewDTO>
             destination.setFilm(filmRepository.findById(filmId).orElse(null));
         } else destination.setFilm(null);
 
-        Long userId = source.getUserId();
-        if (userId != null) {
+        UserDTO userDTO = source.getUserDTO();
+        if (userDTO != null) {
+            Long userId = userDTO.getId();
             destination.setUser(userRepository.findById(userId).orElse(null));
         } else destination.setUser(null);
     }
@@ -63,12 +66,8 @@ public class ReviewMapper extends GenericMapper<Review, ReviewDTO>
         }
         destination.setFilmId(filmId);
 
-        Long userId = null;
         User user = source.getUser();
-        if (user != null) {
-            userId = user.getId();
-        }
-        destination.setUserId(userId);
+        destination.setUserDTO(userMapper.toDTO(user));
     }
 
 
@@ -81,5 +80,10 @@ public class ReviewMapper extends GenericMapper<Review, ReviewDTO>
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setUserMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
     }
 }

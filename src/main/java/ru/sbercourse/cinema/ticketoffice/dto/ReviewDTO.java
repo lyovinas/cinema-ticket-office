@@ -14,8 +14,8 @@ public class ReviewDTO extends GenericDTO {
     @Schema(description = "Идентификатор фильма")
     private Long filmId;
 
-    @Schema(description = "Идентификатор пользователя сервиса")
-    private Long userId;
+    @Schema(description = "Пользователь сервиса")
+    private UserDTO userDTO;
 
     @Schema(description = "Содержание отзыва")
     private String content;

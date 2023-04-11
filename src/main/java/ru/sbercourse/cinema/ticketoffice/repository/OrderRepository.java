@@ -30,11 +30,20 @@ public interface OrderRepository extends GenericRepository<Order>{
     Page<OrderInfoDTO> getAllInfoByUserId(Long userId, PageRequest pageRequest);
 
     @Query(nativeQuery = true,
-            value = "select sum(cost) from orders where created_when between :startDate and :endDate")
+            value = "select sum(cost) from orders " +
+                    "where created_when between :startDate and :endDate " +
+                    "and is_deleted = false and purchase = true")
     Long getTotalCost(@Param(value = "startDate") LocalDate startDate, @Param(value = "endDate") LocalDate endDate);
 
     @Query(nativeQuery = true,
-            value = "select count(*) from orders where created_when between :startDate and :endDate")
+            value = """
+                select count(*)
+                    from orders o
+                    join orders_seats os on o.id = os.order_id
+                                        and o.created_when between :startDate and :endDate
+                                        and o.is_deleted = false
+                                        and o.purchase = true
+            """)
     Long getTotalTickets(@Param(value = "startDate") LocalDate startDate, @Param(value = "endDate") LocalDate endDate);
 
 //    @Query(nativeQuery = true,

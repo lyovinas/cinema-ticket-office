@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @Schema(description = "DTO киносеанса")
-public class FilmSessionDTO extends GenericDTO {
+public class FilmSessionDTO extends GenericDTO implements Comparable<FilmSessionDTO> {
 
     @Schema(description = "Идентификатор фильма")
     private Long filmId;
@@ -26,4 +26,10 @@ public class FilmSessionDTO extends GenericDTO {
     @Schema(description = "Цена")
     private double price;
 
+    @Override
+    public int compareTo(FilmSessionDTO o) {
+        if (startDate.isBefore(o.startDate) || (startDate.equals(o.startDate) && startTime.isBefore(o.startTime))) return -1;
+        if (startDate.isAfter(o.startDate) || (startDate.equals(o.startDate) && startTime.isAfter(o.startTime))) return 1;
+        return 0;
+    }
 }

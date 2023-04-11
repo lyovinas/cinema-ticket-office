@@ -18,9 +18,9 @@ import ru.sbercourse.cinema.ticketoffice.service.SeatService;
 @RequestMapping("/seats")
 public class SeatController {
 
-    SeatService seatService;
-    FilmSessionService filmSessionService;
-    FilmService filmService;
+    private SeatService seatService;
+    private FilmSessionService filmSessionService;
+    private FilmService filmService;
 
 
 
@@ -62,7 +62,7 @@ public class SeatController {
 
     @PostMapping("/update")
     public String update(@ModelAttribute("seatForm") SeatDTO seatDTO) {
-        seatService.update(seatDTO.getId(), seatDTO);
+        seatService.update(seatDTO);
         return "redirect:/seats";
     }
 

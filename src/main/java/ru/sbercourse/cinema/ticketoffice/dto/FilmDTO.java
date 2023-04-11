@@ -29,6 +29,9 @@ public class FilmDTO extends GenericDTO {
     @Schema(description = "Описание фильма", example = "Подросток Марти с помощью машины времени...")
     private String description;
 
+    @Schema(description = "Путь к файлу с постером", example = "/img/pic.jpg")
+    private String posterPath;
+
     @Schema(description = "Создатели фильма")
     private Set<FilmCreatorDTO> filmCreators;
 }

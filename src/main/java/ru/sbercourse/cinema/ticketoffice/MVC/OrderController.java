@@ -15,6 +15,8 @@ import ru.sbercourse.cinema.ticketoffice.service.FilmSessionService;
 import ru.sbercourse.cinema.ticketoffice.service.OrderService;
 import ru.sbercourse.cinema.ticketoffice.service.SeatService;
 
+import java.time.LocalDateTime;
+
 @Controller
 @RequestMapping("/orders")
 public class OrderController {
@@ -35,6 +37,21 @@ public class OrderController {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdWhen"));
         model.addAttribute("orders", orderService.getAll(pageRequest));
         return "orders/viewAllOrders";
+    }
+
+    @GetMapping("/get/{id}")
+    public String getAll(@PathVariable("id") Long id, Model model) {
+        OrderDTO orderDTO = orderService.getById(id);
+        FilmSessionDTO filmSessionDTO = filmSessionService.getById(orderDTO.getFilmSessionId());
+        model.addAttribute("order", orderDTO);
+        model.addAttribute("orderForm", new OrderDTO());
+        model.addAttribute("filmTitle", filmService.getById(filmSessionDTO.getFilmId()).getTitle());
+        model.addAttribute("filmSession", filmSessionDTO);
+        model.addAttribute("seats", seatService.getAllByIds(orderDTO.getSeatIds()));
+        model.addAttribute("canPurchased",
+                LocalDateTime.of(filmSessionDTO.getStartDate(), filmSessionDTO.getStartTime())
+                        .isAfter(LocalDateTime.now()));
+        return "orders/viewOrder";
     }
 
     @GetMapping("/user/{userId}")
@@ -65,10 +82,25 @@ public class OrderController {
         return "redirect:/orders/user/" + orderDTO.getUserId();
     }
 
+    @PostMapping("/purchase")
+    public String purchase(@ModelAttribute("orderForm") OrderDTO orderDTO) {
+        OrderDTO existingOrderDTO = orderService.getById(orderDTO.getId());
+        existingOrderDTO.setPurchase(true);
+        existingOrderDTO.setCreatedWhen(LocalDateTime.now());
+        orderService.update(existingOrderDTO);
+        return "redirect:/orders/user/" + existingOrderDTO.getUserId();
+    }
+
     @GetMapping("/delete/{id}")
     public String softDelete(@PathVariable Long id, HttpServletRequest request) {
         orderService.softDelete(id);
         return "redirect:" + request.getHeader("Referer");
+    }
+
+    @GetMapping("/restore/{id}")
+    public String restore(@PathVariable Long id) {
+        orderService.restore(id);
+        return "redirect:/orders";
     }
 
     @GetMapping("/results")

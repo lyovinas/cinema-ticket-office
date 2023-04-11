@@ -27,10 +27,8 @@
                 </thead>
                 <tbody>
                 <tr th:each="order : ${orders}">
-                    <td>
-                        <a class="text-link text-blue" th:href="'/orders/' + ${order.orderId}" th:text="${order.orderId}"></a>
-                    </td>
-                    <td th:text="${#temporals.format(order.orderCreatedWhen, 'dd.MM.yyyy hh:mm')}"></td>
+                    <td th:text="${order.orderId}"></td>
+                    <td th:text="${#temporals.format(order.orderCreatedWhen, 'dd.MM.yyyy HH:mm')}"></td>
                     <td th:text="${order.filmTitle}"></td>
                     <td th:text="${order.cost}"></td>
                     <td th:text="${order.purchase ? 'Покупка' : 'Бронирование'}"></td>
@@ -38,6 +36,7 @@
 <!--                        <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">-->
                         <div>
 <!--                            <a class="btn btn-sm btn-outline-success" th:href="'/orders/update/' + ${order.id}" style="float: right">Редактировать</a>-->
+                            <a class="btn btn-sm btn-outline-info" th:href="'/orders/get/' + ${order.orderId}" style="float: right">Подробнее</a>
                             <a th:if="${!order.purchase}" class="btn btn-sm btn-outline-danger" th:href="'/orders/delete/' + ${order.orderId}"
                                onclick="return confirm('Вы действительно хотите отменить бронирование?');" style="float: right">Отменить</a>
 <!--                            <a th:if="${order.isDeleted()}" class="btn btn-sm btn-outline-warning" th:href="'/orders/restore/' + ${order.orderId}" style="float: right">Восстановить</a>-->

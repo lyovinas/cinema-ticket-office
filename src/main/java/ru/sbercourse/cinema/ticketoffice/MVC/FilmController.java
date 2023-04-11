@@ -32,9 +32,10 @@ public class FilmController {
         return "films/viewAllFilms";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public String viewFilm(@PathVariable Long id, Model model) {
         model.addAttribute("film", filmService.getWithSessionsById(id));
+        model.addAttribute("reviews", filmService.getReviews(id));
         return "/films/viewFilm";
     }
 
@@ -70,8 +71,8 @@ public class FilmController {
 
     @PostMapping("/update")
     public String update(@ModelAttribute("filmForm") FilmDTO filmDTO) {
-        filmService.update(filmDTO.getId(), filmDTO);
-        return "redirect:/films/" + filmDTO.getId();
+        filmService.update(filmDTO);
+        return "redirect:/films/get/" + filmDTO.getId();
     }
 
     @GetMapping("/{filmId}/addFilmCreator")

@@ -36,6 +36,9 @@ public class Film extends GenericModel{
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "poster_path", nullable = false)
+    private String posterPath;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "films_film_creators",
             joinColumns = @JoinColumn(name = "film_id"), foreignKey = @ForeignKey(name = "fk_films_film_creators"),

@@ -61,9 +61,9 @@
                 <tbody>
                 <tr th:each="order : ${orders}">
                     <td>
-                        <a class="text-link text-blue" th:href="'/orders/' + ${order.id}" th:text="${order.id}"></a>
+                        <a class="text-link text-blue" th:href="'/orders/get/' + ${order.id}" th:text="${order.id}"></a>
                     </td>
-                    <td th:text="${#temporals.format(order.createdWhen, 'dd.MM.yyyy hh:mm')}"></td>
+                    <td th:text="${#temporals.format(order.createdWhen, 'dd.MM.yyyy HH:mm')}"></td>
                     <td th:text="${order.createdBy}"></td>
                     <td th:text="${order.cost}"></td>
                     <td th:text="${order.purchase ? 'Покупка' : 'Бронирование'}"></td>

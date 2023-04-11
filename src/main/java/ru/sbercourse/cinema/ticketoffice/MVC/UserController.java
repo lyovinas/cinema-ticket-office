@@ -47,7 +47,7 @@ public class UserController {
 
   @PostMapping("/profile/update")
   public String updateProfile(@ModelAttribute("userForm") UserDTO userDTO) {
-    userService.update(userDTO.getId(), userDTO);
+    userService.update(userDTO);
     return "redirect:/users/profile/" + userDTO.getId();
   }
 

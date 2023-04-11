@@ -68,7 +68,7 @@ public class FilmCreatorController {
 
     @PostMapping("/update")
     public String update(@ModelAttribute("filmCreatorForm") FilmCreatorDTO filmCreatorDTO) {
-        filmCreatorService.update(filmCreatorDTO.getId(), filmCreatorDTO);
+        filmCreatorService.update(filmCreatorDTO);
         return "redirect:/filmCreators";
     }
 

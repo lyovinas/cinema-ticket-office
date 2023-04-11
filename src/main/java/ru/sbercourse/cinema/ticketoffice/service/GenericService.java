@@ -3,6 +3,7 @@ package ru.sbercourse.cinema.ticketoffice.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import ru.sbercourse.cinema.ticketoffice.dto.GenericDTO;
 import ru.sbercourse.cinema.ticketoffice.mapper.Mapper;
 import ru.sbercourse.cinema.ticketoffice.model.GenericModel;
@@ -10,8 +11,6 @@ import ru.sbercourse.cinema.ticketoffice.repository.GenericRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static ru.sbercourse.cinema.ticketoffice.constants.UserRolesConstants.ADMIN;
 
 public abstract class GenericService<E extends GenericModel, D extends GenericDTO> {
 
@@ -41,25 +40,24 @@ public abstract class GenericService<E extends GenericModel, D extends GenericDT
         if (entityId != null && repository.existsById(entityId)) {
             return null;
         }
-        entity.setCreatedBy(ADMIN);
+        entity.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
         entity.setCreatedWhen(LocalDateTime.now());
         return mapper.toDTO(repository.save(entity));
     }
 
-    public D update(Long id, D DTO) {
+    public D update(D DTO) {
         E entity = mapper.toEntity(DTO);
-
+        Long id = entity.getId();
         if (id != null) {
             E existingEntity = repository.findById(id).orElse(null);
             if (existingEntity != null) {
-                entity.setId(id);
                 entity.setCreatedWhen(existingEntity.getCreatedWhen());
                 entity.setCreatedBy(existingEntity.getCreatedBy());
                 entity.setDeleted(existingEntity.isDeleted());
                 entity.setDeletedWhen(existingEntity.getDeletedWhen());
                 entity.setDeletedBy(existingEntity.getDeletedBy());
                 entity.setUpdatedWhen(LocalDateTime.now());
-                entity.setUpdatedBy(ADMIN);
+                entity.setUpdatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
                 return mapper.toDTO(repository.save(entity));
             }
         }
@@ -77,7 +75,7 @@ public abstract class GenericService<E extends GenericModel, D extends GenericDT
     public void softDelete(Long id) {
         D DTO = getById(id);
         DTO.setDeleted(true);
-        DTO.setDeletedBy(ADMIN);
+        DTO.setDeletedBy(SecurityContextHolder.getContext().getAuthentication().getName());
         DTO.setDeletedWhen(LocalDateTime.now());
         repository.save(mapper.toEntity(DTO));
     }
