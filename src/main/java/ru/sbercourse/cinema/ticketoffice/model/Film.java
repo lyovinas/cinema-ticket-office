@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString(callSuper = true)
-@SequenceGenerator(name = "default_gen", sequenceName = "films_seq", allocationSize = 1)
+@SequenceGenerator(name = "default_gen", sequenceName = "films_seq", allocationSize = 1, initialValue = 12)
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "jsonId")
 public class Film extends GenericModel{
 
@@ -36,10 +36,10 @@ public class Film extends GenericModel{
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "poster_path", nullable = false)
-    private String posterPath;
+    @Column(name = "poster_file_name")
+    private String posterFileName;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany()//fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE}
     @JoinTable(name = "films_film_creators",
             joinColumns = @JoinColumn(name = "film_id"), foreignKey = @ForeignKey(name = "fk_films_film_creators"),
             inverseJoinColumns = @JoinColumn(name = "film_creator_id"), inverseForeignKey = @ForeignKey(name = "fk_film_creators_films"))

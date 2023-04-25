@@ -1,9 +1,10 @@
 <header xmlns:th="http://www.thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
         th:fragment="header">
-  <nav class="navbar navbar-expand-md fixed-top" style="background-color: #b84f3c">
+  <nav class="navbar navbar-expand-md fixed-top" style="background-color: lightslategrey">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/" style="color: whitesmoke">Кинотеатр "Победа"</a>
+      <img src="/img/logo.png" style="max-height: 40px" alt="">
+      <a class="navbar-brand ms-3 me-4" href="/" style="color: whitesmoke">Кинотеатр "Победа"</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
               data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
               aria-expanded="false" aria-label="Toggle navigation">
@@ -24,9 +25,6 @@
           <li class="nav-item" sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">
             <a class="nav-link" aria-current="page" href="/orders">Заказы</a>
           </li>
-          <li class="nav-item" sec:authorize="isAuthenticated() && hasRole(T(ru.sbercourse.cinema.ticketoffice.constants.UserRolesConstants).USER)">
-            <a class="nav-link" aria-current="page" th:href="'/orders/user/' + ${#authentication.getPrincipal().getUserId()}">Мои заказы</a>
-          </li>
           <li class="nav-item" sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">
             <a class="nav-link" aria-current="page" href="/orders/results">Результаты</a>
           </li>
@@ -34,14 +32,17 @@
             <a class="nav-link" aria-current="page" href="/users">Пользователи</a>
           </li>
         </ul>
+        <div sec:authorize="isAuthenticated() && hasRole(T(ru.sbercourse.cinema.ticketoffice.constants.UserRolesConstants).USER)">
+          <a class="nav-link mx-2 my-2" th:href="'/orders/user/' + ${#authentication.getPrincipal().getUserId()}">Мои заказы</a>
+        </div>
         <div sec:authorize="isAuthenticated() && !hasRole('ADMIN')">
-          <a class="nav-link active" style="float: right" th:href="'/users/profile/' + ${#authentication.getPrincipal().getUserId()}">Профиль</a>
+          <a class="nav-link mx-2 my-2" th:href="'/users/profile/' + ${#authentication.getPrincipal().getUserId()}">Профиль</a>
         </div>
         <form class="d-flex" sec:authorize="!isAuthenticated()">
-          <a href="/login" class="btn btn-primary" role="button" aria-disabled="true" style="color: white; background-color: #b84f3c; border-color: #b84f3c">Войти</a>
+          <a href="/login" class="btn btn-secondary ms-4" role="button" aria-disabled="true" style="color: whitesmoke; background-color: slategrey;">Войти</a>
         </form>
         <form class="d-flex" sec:authorize="isAuthenticated()">
-          <a href="/logout" class="btn btn-primary" role="button" aria-disabled="true" style="color: white; background-color: #b84f3c; border-color: #b84f3c">Выйти</a>
+          <a href="/logout" class="btn btn-secondary ms-4" role="button" aria-disabled="true" style="color: whitesmoke; background-color: slategrey;">Выйти</a>
         </form>
       </div>
     </div>

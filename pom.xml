@@ -86,6 +86,41 @@
 			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
 		</dependency>
 		<!--        security end-->
+
+		<!--        mail-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+			<version>4.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.angus</groupId>
+					<artifactId>angus-activation</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.activation</groupId>
+			<artifactId>jakarta.activation</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+		<!--        mail end-->
+
+		<!--        Для включения LOG4J2 своего логгера-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

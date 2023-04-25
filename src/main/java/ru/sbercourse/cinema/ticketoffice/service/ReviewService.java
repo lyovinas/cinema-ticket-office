@@ -6,9 +6,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.sbercourse.cinema.ticketoffice.dto.ReviewDTO;
 import ru.sbercourse.cinema.ticketoffice.mapper.ReviewMapper;
-import ru.sbercourse.cinema.ticketoffice.mapper.UserMapper;
 import ru.sbercourse.cinema.ticketoffice.model.Review;
+import ru.sbercourse.cinema.ticketoffice.model.User;
 import ru.sbercourse.cinema.ticketoffice.repository.ReviewRepository;
+import ru.sbercourse.cinema.ticketoffice.repository.UserRepository;
 import ru.sbercourse.cinema.ticketoffice.service.userdetails.CustomUserDetails;
 
 import java.time.LocalDateTime;
@@ -16,8 +17,7 @@ import java.time.LocalDateTime;
 @Service
 public class ReviewService extends GenericService<Review, ReviewDTO> {
 
-    private UserService userService;
-    private UserMapper userMapper;
+    private UserRepository userRepository;
 
     public ReviewService(ReviewRepository reviewRepository, ReviewMapper reviewMapper) {
         repository = reviewRepository;
@@ -27,25 +27,23 @@ public class ReviewService extends GenericService<Review, ReviewDTO> {
 
     @Override
     public ReviewDTO create(ReviewDTO reviewDTO) {
-        Review review = mapper.toEntity(reviewDTO);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.valueOf(((CustomUserDetails) authentication.getPrincipal()).getUserId());
-        review.setUser(userMapper.toEntity(userService.getById(userId)));
-        review.setCreatedBy(authentication.getName());
-        review.setCreatedWhen(LocalDateTime.now());
-
-        return mapper.toDTO(repository.save(review));
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            Review review = mapper.toEntity(reviewDTO);
+            review.setUser(user);
+            review.setCreatedBy(authentication.getName());
+            review.setCreatedWhen(LocalDateTime.now());
+            return mapper.toDTO(repository.save(review));
+        }
+        return null;
     }
 
 
 
     @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Autowired
-    public void setUserMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }

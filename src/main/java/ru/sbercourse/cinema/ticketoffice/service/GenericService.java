@@ -87,14 +87,4 @@ public abstract class GenericService<E extends GenericModel, D extends GenericDT
         DTO.setDeletedWhen(null);
         repository.save(mapper.toEntity(DTO));
     }
-
-
-
-    public Mapper<E, D> getMapper() {
-        return mapper;
-    }
-
-    public GenericRepository<E> getRepository() {
-        return repository;
-    }
 }

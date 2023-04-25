@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Все фильмы</title>
+    <title>Фильмы</title>
 </head>
 
 <body>
@@ -24,14 +24,14 @@
         </div>
 
         <div class="row justify-content-evenly">
-            <div class="card mb-3 me-3" style="max-width: 540px;" th:each="film : ${films}">
+            <div class="card mb-3 me-3" style="max-width: 540px; background-color: mintcream" th:each="film : ${films}">
                 <div class="row g-0">
                     <div class="col-md-4 my-2">
-                        <img src="/img/bttf.jpg" class="img-fluid rounded-start" alt="">
+                        <img th:if="${film.posterFileName != null}" th:src="'/posters/' + ${film.posterFileName}" class="img-fluid rounded-start" alt="">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body h-75">
-                            <h5 class="card-title mb-4" th:text="${film.title}"></h5>
+                            <h4 class="card-title mb-4" th:text="${film.title}"></h4>
                             <p class="card-text"><span class="text-muted">Жанр: </span><span th:text="${film.genre.text}"></span></p>
                             <p class="card-text"><span class="text-muted">Год выхода: </span><span th:text="${film.releaseYear}"></span></p>
                             <p class="card-text"><span class="text-muted">Страна производства: </span><span th:text="${film.country}"></span></p>

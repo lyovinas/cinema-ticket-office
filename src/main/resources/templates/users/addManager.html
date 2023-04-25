@@ -18,12 +18,12 @@
     <div class="mt-3 row g-2">
       <div class="col-md">
         <div class="form-floating">
-          <input name="login" type="text" class="form-control" id="login" placeholder="Введите логин" required>
+          <input th:field="*{login}" name="login" type="text" class="form-control" id="login" placeholder="Введите логин" required>
           <label for="login">Логин</label>
           <div class="invalid-feedback">Обязательное поле для заполнения</div>
-          <!--          <div class="alert alert-danger" th:if="${#fields.hasErrors('login')}">-->
-          <!--            <p th:errors="*{login}"></p>-->
-          <!--          </div>-->
+          <div class="alert alert-danger" th:if="${#fields.hasErrors('login')}">
+            <p th:errors="*{login}"></p>
+          </div>
         </div>
       </div>
       <div class="col-md">
@@ -37,14 +37,14 @@
     <div class="mt-3 row g-2">
       <div class="col-md">
         <div class="form-floating">
-          <input name="firstName" type="text" class="form-control" id="firstName" placeholder="Введите имя" required>
+          <input th:field="*{firstName}" name="firstName" type="text" class="form-control" id="firstName" placeholder="Введите имя" required>
           <label for="firstName">Имя</label>
           <div class="invalid-feedback">Обязательное поле для заполнения</div>
         </div>
       </div>
       <div class="col-md">
         <div class="form-floating">
-          <input name="lastName" type="text" class="form-control" id="lastName" placeholder="Введите фамилию" required>
+          <input th:field="*{lastName}" name="lastName" type="text" class="form-control" id="lastName" placeholder="Введите фамилию" required>
           <label for="lastName">Фамилия</label>
           <div class="invalid-feedback">Обязательное поле для заполнения</div>
         </div>
@@ -53,12 +53,12 @@
     <div class="mt-3 row g-2">
       <div class="col-md">
         <div class="form-floating">
-          <input name="email" type="email" class="form-control" id="email" placeholder="Введите email" required>
+          <input th:field="*{email}" name="email" type="email" class="form-control" id="email" placeholder="Введите email" required>
           <label for="email">Email</label>
           <div class="invalid-feedback">Обязательное поле для заполнения</div>
-          <!--          <div class="alert alert-danger" th:if="${#fields.hasErrors('email')}">-->
-          <!--            <p th:errors="*{email}"></p>-->
-          <!--          </div>-->
+          <div class="alert alert-danger" th:if="${#fields.hasErrors('email')}">
+            <p th:errors="*{email}"></p>
+          </div>
         </div>
       </div>
       <div class="col-md">

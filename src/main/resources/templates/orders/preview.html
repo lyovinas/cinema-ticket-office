@@ -38,12 +38,12 @@
         </div>
     </div>
     <form class="needs-validation" style="max-width: 50vw" method="POST" th:action="@{/orders/add}" th:object="${orderForm}">
-        <input name="userId" type="hidden" value="5">
+        <input name="userId" type="hidden" th:value="${#authentication.getPrincipal().getUserId()}">
         <input name="filmSessionId" type="hidden" th:value="${orderForm.filmSessionId}">
 <!--        <input name="seatIds" type="hidden" th:each="seatId : ${orderForm.seatIds}" th:value="${seatId}">-->
         <input type="hidden" th:field="*{seatIds}" th:value="${orderForm.seatIds}">
         <input name="cost" type="hidden" th:value="${filmSession.price} * ${orderForm.seatIds.size()}">
-        <input name="purchase" type="hidden" value="false">
+        <input name="purchase" type="hidden" value="false" id="purchase">
         <h6 class="mt-3 mb-1">Выбранные места:</h6>
         <div class="row g-2 mx-1">
             <div class="col-md-2 me-4" th:each="seat : ${seats}">

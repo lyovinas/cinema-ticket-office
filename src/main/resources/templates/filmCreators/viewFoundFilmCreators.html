@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Создатели фильмов</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+  <div class="mt-5">
+    <div class="row">
+      <div class="col">
+        <h2>Найденные создатели</h2>
+      </div>
+    </div>
+
+    <div>
+      <table class="table table-hover mt-3">
+        <thead>
+        <tr>
+          <th scope="col">ФИО</th>
+          <th scope="col">Позиция</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="filmCreator : ${filmCreators}">
+          <td th:text="${filmCreator.getFullName()}">
+          </td>
+          <td th:text="${filmCreator.getPosition()}"></td>
+          <td>
+            <div>
+              <a class="btn btn-sm btn-outline-success" th:href="'/filmCreators/update/' + ${filmCreator.getId()}" style="float: right">Редактировать</a>
+              <a th:if="${!filmCreator.isDeleted()}" class="btn btn-sm btn-outline-danger" th:href="'/filmCreators/delete/' + ${filmCreator.getId()}"
+                 onclick="return confirm('Вы действительно хотите удалить создателя?');" style="float: right">Удалить</a>
+              <a th:if="${filmCreator.isDeleted()}" class="btn btn-sm btn-outline-warning" th:href="'/filmCreators/restore/' + ${filmCreator.getId()}" style="float: right">Восстановить</a>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+      <div class="mt-3 row g-2">
+          <button type="button" class="btn btn-secondary" onclick="window.history.back()">Назад</button>
+      </div>
+  </div>
+</div>
+</body>
+
+</html>

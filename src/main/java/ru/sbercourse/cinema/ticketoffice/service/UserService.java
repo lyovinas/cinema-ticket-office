@@ -1,18 +1,24 @@
 package ru.sbercourse.cinema.ticketoffice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.sbercourse.cinema.ticketoffice.constants.MailConstants;
 import ru.sbercourse.cinema.ticketoffice.dto.UserDTO;
 import ru.sbercourse.cinema.ticketoffice.mapper.UserMapper;
 import ru.sbercourse.cinema.ticketoffice.model.Order;
 import ru.sbercourse.cinema.ticketoffice.model.Role;
 import ru.sbercourse.cinema.ticketoffice.model.User;
 import ru.sbercourse.cinema.ticketoffice.repository.UserRepository;
+import ru.sbercourse.cinema.ticketoffice.utils.MailUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import static ru.sbercourse.cinema.ticketoffice.constants.UserRolesConstants.MANAGER;
 import static ru.sbercourse.cinema.ticketoffice.constants.UserRolesConstants.USER;
@@ -22,6 +28,9 @@ public class UserService extends GenericService<User, UserDTO> {
 
     private RoleService roleService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private JavaMailSender javaMailSender;
+    @Value("${spring.mail.username}")
+    private String mailServerUsername;
 
 
 
@@ -71,12 +80,12 @@ public class UserService extends GenericService<User, UserDTO> {
         super.create(userDTO);
     }
 
-    public User getByLogin(String login) {
-        return ((UserRepository) repository).getByLogin(login);
+    public UserDTO getByLogin(String login) {
+        return mapper.toDTO(((UserRepository) repository).getByLogin(login));
     }
 
-    public User getByEmail(String email) {
-        return ((UserRepository) repository).getByEmail(email);
+    public UserDTO getByEmail(String email) {
+        return mapper.toDTO(((UserRepository) repository).getByEmail(email));
     }
 
     public List<Order> getOrders(Long userId) {
@@ -84,6 +93,32 @@ public class UserService extends GenericService<User, UserDTO> {
         return user != null
                 ? user.getOrders().stream().toList()
                 : null;
+    }
+
+    public void sendChangePasswordEmail(String email) {
+        User user = mapper.toEntity(getByEmail(email));
+        UUID uuid = UUID.randomUUID();
+        user.setChangePasswordToken(uuid.toString());
+        user.setUpdatedWhen(LocalDateTime.now());
+        user.setUpdatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+        repository.save(user);
+        SimpleMailMessage message = MailUtils.createEmailMessage(
+                mailServerUsername,
+                user.getEmail(),
+                MailConstants.MAIL_SUBJECT_FOR_REMEMBER_PASSWORD,
+                MailConstants.MAIL_MESSAGE_FOR_REMEMBER_PASSWORD +
+                        "http://localhost:8080/users/change-password?uuid=" + uuid
+        );
+        javaMailSender.send(message);
+    }
+
+    public void changePassword(String uuid, String password) {
+        User user = ((UserRepository) repository).getByChangePasswordToken(uuid);
+        user.setPassword(bCryptPasswordEncoder.encode(password));
+        user.setChangePasswordToken(null);
+        user.setUpdatedWhen(LocalDateTime.now());
+        user.setUpdatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+        repository.save(user);
     }
 
 
@@ -94,7 +129,12 @@ public class UserService extends GenericService<User, UserDTO> {
     }
 
     @Autowired
-    public void setbCryptPasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public void setBCryptPasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
+    @Autowired
+    public void setJavaMailSender(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
     }
 }

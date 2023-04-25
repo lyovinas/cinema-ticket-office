@@ -1,10 +1,10 @@
 package ru.sbercourse.cinema.ticketoffice.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.sbercourse.cinema.ticketoffice.model.Review;
 import ru.sbercourse.cinema.ticketoffice.model.Role;
 
 import java.time.LocalDate;
@@ -13,6 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Schema(description = "DTO пользователя сервиса")
 public class UserDTO extends GenericDTO {
 
@@ -34,12 +35,15 @@ public class UserDTO extends GenericDTO {
     @Schema(description = "Пароль для входа", example = "P@ssw0rd")
     private String password;
 
+    @Schema(description = "Токен для смены пароля")
+    private String changePasswordToken;
+
     @Schema(description = "Роль на сервисе", accessMode = Schema.AccessMode.READ_ONLY)
     private Role role;
 
     @Schema(description = "Идентификаторы заказов", accessMode = Schema.AccessMode.READ_ONLY)
-    private Set<Long> ordersIds;//TODO необходимость поля вообще или в виде id ??? также в модели
+    private Set<Long> ordersIds;
+}
 
 //    @Schema(description = "Отзывы пользователя", accessMode = Schema.AccessMode.READ_ONLY)
 //    private Set<ReviewDTO> reviews;
-}

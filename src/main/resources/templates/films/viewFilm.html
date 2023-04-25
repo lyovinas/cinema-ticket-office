@@ -11,14 +11,14 @@
 
 <body>
 <div layout:fragment="content">
-    <div class="card mb-3">
+    <div class="card mt-2 mb-3" style="background-color: mintcream">
         <div class="row g-0">
-            <div class="col-md-4">
-                <img src="/img/bttf.jpg" class="img-fluid rounded-start" alt="" style="max-height: 540px;">
+            <div class="col-md-3 my-2">
+                <img th:if="${film.posterFileName != null}" th:src="'/posters/' + ${film.posterFileName}" class="img-fluid rounded-start ms-2" alt="">
             </div>
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="card-body">
-                    <h5 class="card-title mt-3 mb-4" th:text="${film.title}"></h5>
+                    <h4 class="card-title mt-3 mb-4" th:text="${film.title}"></h4>
                     <p class="card-text"><span class="text-muted">Жанр: </span><span th:text="${film.genre.text}"></span></p>
                     <p class="card-text"><span class="text-muted">Год выхода: </span><span th:text="${film.releaseYear}"></span></p>
                     <p class="card-text mb-4"><span class="text-muted">Страна производства: </span><span th:text="${film.country}"></span></p>
@@ -52,13 +52,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="filmSession : ${film.getFilmSessions()}">
+        <tr th:each="filmSession : ${film.filmSessions}">
             <td th:text="${#temporals.format(filmSession.startDate, 'dd.MM.yyyy')}"></td>
-            <td>
+            <td sec:authorize="!isAuthenticated() ||
+            (isAuthenticated() && hasRole(T(ru.sbercourse.cinema.ticketoffice.constants.UserRolesConstants).USER))">
                 <a class="text-link text-blue"
                    th:href="@{/seats/selectSeat(filmSessionId=${filmSession.id})}"
                    th:text="${filmSession.startTime}"></a>
             </td>
+            <td sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
+                th:text="${filmSession.startTime}"></td>
             <td th:text="${filmSession.price}"></td>
             <td sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">
                 <a class="btn btn-sm btn-outline-success" th:href="'/filmSessions/update/' + ${filmSession.getId()}" style="float: right">Редактировать</a>
@@ -105,7 +108,7 @@
 
     <hr class="mt-3 hr"/>
     <h3 class="mt-3 mb-3">Отзывы:</h3>
-    <div class="card mt-2" th:each="review : ${reviews}">
+    <div class="card mt-2" style="background-color: mintcream" th:each="review : ${film.reviews}">
         <div class="card-body">
             <h6 class="card-title" th:text="${review.userDTO.firstName}"></h6>
             <h6 class="card-subtitle mb-2 text-muted" th:text="${#temporals.format(review.createdWhen, 'dd.MM.yyyy HH:mm')}"></h6>

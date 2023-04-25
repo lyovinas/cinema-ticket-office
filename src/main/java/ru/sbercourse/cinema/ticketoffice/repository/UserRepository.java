@@ -9,4 +9,6 @@ public interface UserRepository extends GenericRepository<User> {
     User getByLogin(String login);
 
     User getByEmail(String email);
+
+    User getByChangePasswordToken(String uuid);
 }

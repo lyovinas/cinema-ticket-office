@@ -22,10 +22,6 @@ public class SeatService extends GenericService<Seat, SeatDTO> {
 
 
 
-    public SeatDTO getByRowAndPlace(Byte row, Byte place) {
-        return mapper.toDTO(((SeatRepository) repository).getByRowAndPlace(row, place));
-    }
-
     public Map<Byte, Map<Byte, Long>> getAllInMap(Long filmSessionId) {
         List<SeatsMapDTO> seats = ((SeatRepository) repository).getSeatsMap(filmSessionId);
         Map<Byte, Map<Byte, Long>> seatsInMap = new TreeMap<>();
@@ -45,25 +41,16 @@ public class SeatService extends GenericService<Seat, SeatDTO> {
         String row = rowForSearch != null ? String.valueOf(rowForSearch) : "%";
         String place = placeForSearch != null ? String.valueOf(placeForSearch) : "%";
         Page<Seat> page = ((SeatRepository) repository).getAllByRowAndPlace(row, place, pageRequest);
-//        List<SeatDTO> result;
-//        long pageTotalElements;
-//        if (rowForSearch != null && placeForSearch == null) {
-//            page = ((SeatRepository) repository).getAllByRow(rowForSearch, pageRequest);
-//            result = mapper.toDTOs(page.getContent());
-//            pageTotalElements = page.getTotalElements();
-//        } else if (rowForSearch == null && placeForSearch != null) {
-//            page = ((SeatRepository) repository).getAllByPlace(placeForSearch, pageRequest);
-//            result = mapper.toDTOs(page.getContent());
-//            pageTotalElements = page.getTotalElements();
-//        } else {
-//            Seat seat = ((SeatRepository) repository).getByRowAndPlace(rowForSearch, placeForSearch);
-//            result = List.of(mapper.toDTO(seat));
-//            pageTotalElements = 1L;
-//        }
         return new PageImpl<>(mapper.toDTOs(page.getContent()), pageRequest, page.getTotalElements());
     }
 
     public List<SeatDTO> getAllByIds(Set<Long> seatIds) {
-        return mapper.toDTOs(repository.findAllById(seatIds));
+        List<Seat> seats = repository.findAllById(seatIds)
+                .stream().sorted((s1, s2) -> {
+                    if (s1.getRow() > s2.getRow()) return 1;
+                    if (s1.getRow() < s2.getRow()) return -1;
+                    return s1.getPlace().compareTo(s2.getPlace());
+                }).toList();
+        return mapper.toDTOs(seats);
     }
 }

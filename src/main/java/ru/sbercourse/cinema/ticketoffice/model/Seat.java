@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString(callSuper = true)
-@SequenceGenerator(name = "default_gen", sequenceName = "seats_seq", allocationSize = 1)
+@SequenceGenerator(name = "default_gen", sequenceName = "seats_seq", allocationSize = 1, initialValue = 26)
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "jsonId")
 public class Seat extends GenericModel{
 

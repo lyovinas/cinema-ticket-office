@@ -1,0 +1,19 @@
+#docker-compose up
+version: "3.7"
+services:
+  postgres:
+    container_name: localPostgresSQLDB
+    image: postgres:10.22-alpine
+    environment:
+      POSTGRES_DB: "local_db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "12345"
+    ports:
+      - "5432:5432"
+    networks:
+      java14-network:
+        aliases:
+            - java14db
+networks:
+  java14-network:
+    name: 'our_java14_network'

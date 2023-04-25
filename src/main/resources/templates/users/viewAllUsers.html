@@ -19,7 +19,7 @@
           aria-disabled="true">Добавить управляющего</a>
     </div>
   </div>
-  <h4>Поиск</h4>
+<!--  <h4>Поиск</h4>-->
   <!--  <div class="row">-->
   <!--    <div class="col">-->
   <!--      <form method="POST" th:action="@{/users/search}" th:object="${userSearchForm}">-->
@@ -76,14 +76,14 @@
         <td>
           <a
               th:if="${!user.isDeleted()}"
-              th:href="'/users/ban/' + ${user.id}"
+              th:href="'/users/delete/' + ${user.id}"
               class="btn btn-danger"
               role="button"
               onclick="return confirm('Вы действительно хотите заблокировать пользователя?');"
               aria-disabled="true">Заблокировать</a>
           <a
               th:if="${user.isDeleted()}"
-              th:href="'/users/unban/' + ${user.id}"
+              th:href="'/users/restore/' + ${user.id}"
               class="btn btn-success"
               role="button"
               onclick="return confirm('Вы действительно хотите разблокировать пользователя?');"

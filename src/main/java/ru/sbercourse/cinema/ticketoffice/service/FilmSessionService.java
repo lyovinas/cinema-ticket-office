@@ -6,9 +6,6 @@ import ru.sbercourse.cinema.ticketoffice.mapper.FilmSessionMapper;
 import ru.sbercourse.cinema.ticketoffice.model.FilmSession;
 import ru.sbercourse.cinema.ticketoffice.repository.FilmSessionRepository;
 
-import java.time.LocalDateTime;
-import java.util.Set;
-
 @Service
 public class FilmSessionService extends GenericService<FilmSession, FilmSessionDTO> {
 
@@ -17,14 +14,14 @@ public class FilmSessionService extends GenericService<FilmSession, FilmSessionD
         mapper = filmSessionMapper;
     }
 
-
-    public Set<FilmSession> getByPeriod(LocalDateTime start, LocalDateTime end) {
-        return start !=null && end != null
-                ? ((FilmSessionRepository) repository).getByPeriod(start, end)
-                : null;
-    }
-
-    public Set<FilmSession> getActual() {
-        return ((FilmSessionRepository) repository).getActual();
-    }
 }
+
+//    public Set<FilmSession> getByPeriod(LocalDate start, LocalDate end) {
+//        return start !=null && end != null
+//                ? ((FilmSessionRepository) repository).getByPeriod(start, end)
+//                : null;
+//    }
+
+//    public Set<FilmSession> getActual() {
+//        return ((FilmSessionRepository) repository).getActual();
+//    }

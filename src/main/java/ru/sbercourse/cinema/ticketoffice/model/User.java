@@ -39,6 +39,9 @@ public class User extends GenericModel{
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "change_password_token")
+    private String changePasswordToken;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "fk_users_roles"), nullable = false)
     private Role role;
@@ -47,9 +50,9 @@ public class User extends GenericModel{
     @OneToMany(mappedBy = "user", orphanRemoval = true,
             cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Order> orders;
-
-    @ToString.Exclude
-    @OneToMany(mappedBy = "user", orphanRemoval = true,
-            cascade = {CascadeType.MERGE, CascadeType.REMOVE})
-    private Set<Review> reviews;
 }
+
+//    @ToString.Exclude
+//    @OneToMany(mappedBy = "user", orphanRemoval = true,
+//            cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+//    private Set<Review> reviews;

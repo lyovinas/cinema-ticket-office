@@ -28,21 +28,21 @@
                 </form>
             </div>
             <form class="d-flex needs-validation" method="POST" th:action="@{/}" th:object="${startDate}">
-                <input name="startDate" type="date" class="form-control" id="selectedDate" required>
+                <input name="startDate" type="date" th:min="${minDate}" class="form-control" style="background-color: azure" id="selectedDate" required>
                 <label for="selectedDate"></label>
                 <button type="submit" class="btn btn-secondary ms-2">Выбрать</button>
             </form>
         </div>
 
         <div class="row justify-content-evenly">
-            <div class="card mb-3 me-3" style="max-width: 540px;" th:each="film : ${films}">
+            <div class="card mb-3 me-3" style="max-width: 540px; background-color: mintcream" th:each="film : ${films}">
                 <div class="row g-0">
                     <div class="col-md-4 my-2">
-                        <img th:src="${film.posterPath}" class="img-fluid rounded-start" alt="">
+                        <img th:if="${film.posterFileName != null}" th:src="'/posters/' + ${film.posterFileName}" class="img-fluid rounded-start" alt="">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body h-75">
-                            <h5 class="card-title mb-4" th:text="${film.title}"></h5>
+                            <h4 class="card-title mt-2 mb-4" th:text="${film.title}"></h4>
                             <p class="card-text"><span class="text-muted">Жанр: </span><span th:text="${film.genre.text}"></span></p>
                             <p class="card-text"><span class="text-muted">Год выхода: </span><span th:text="${film.releaseYear}"></span></p>
                             <p class="card-text"><span class="text-muted">Страна производства: </span><span th:text="${film.country}"></span></p>

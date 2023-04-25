@@ -4,6 +4,8 @@ public enum Genre {
     FANTASY("Фантастика"),
     COMEDY("Комедия"),
     DRAMA("Драма"),
+    CRIME("Криминал"),
+    MILITARY("Военный"),
     ACTION("Боевик");
 
     private final String text;

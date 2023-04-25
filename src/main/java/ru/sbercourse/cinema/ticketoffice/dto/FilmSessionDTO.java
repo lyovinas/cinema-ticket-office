@@ -1,6 +1,7 @@
 package ru.sbercourse.cinema.ticketoffice.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Schema(description = "DTO киносеанса")
 public class FilmSessionDTO extends GenericDTO implements Comparable<FilmSessionDTO> {
 

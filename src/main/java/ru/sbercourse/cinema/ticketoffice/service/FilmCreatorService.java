@@ -1,8 +1,5 @@
 package ru.sbercourse.cinema.ticketoffice.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.sbercourse.cinema.ticketoffice.dto.FilmCreatorDTO;
 import ru.sbercourse.cinema.ticketoffice.mapper.FilmCreatorMapper;
@@ -21,10 +18,9 @@ public class FilmCreatorService extends GenericService<FilmCreator, FilmCreatorD
 
 
 
-    public Page<FilmCreatorDTO> searchFilmCreators(final String fullName, Pageable pageable) {
-        Page<FilmCreator> page = ((FilmCreatorRepository) repository)
-                .getAllByFullNameContainsIgnoreCaseAndIsDeletedFalse(fullName, pageable);
-        List<FilmCreatorDTO> result = mapper.toDTOs(page.getContent());
-        return new PageImpl<>(result, pageable, page.getTotalElements());
+    public List<FilmCreatorDTO> searchFilmCreators(final String fullName) {
+        List<FilmCreator> filmCreators = ((FilmCreatorRepository) repository)
+                .getAllByFullNameContainsIgnoreCase(fullName);
+        return mapper.toDTOs(filmCreators);
     }
 }

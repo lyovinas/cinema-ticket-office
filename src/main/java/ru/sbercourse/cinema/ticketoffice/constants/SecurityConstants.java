@@ -8,12 +8,14 @@ public interface SecurityConstants {
 //      "/js/**",
       "/css/**",
       "/img/**",
+      "/posters/**",
       "/",
       "/login",
       "/users/registration",
-//      "/users/remember-password",
-//      "/users/change-password",
-//      "/error",
+      "/users/remember-password",
+      "/users/change-password",
+      "/error",
+      "/favicon.ico",
       // -- Swagger UI v3 (OpenAPI)
       "/swagger-ui/**",
       "/v3/api-docs/**");
@@ -109,6 +111,8 @@ public interface SecurityConstants {
       "/users",
 //      "/users/ban/{id}",
 //      "/users/unban/{id}",
-      "/users/add-manager"
+      "/users/add-manager",
+      "/users/delete/{id}",
+      "/users/restore/{id}"
   );
 }

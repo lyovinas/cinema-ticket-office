@@ -1,16 +1,16 @@
 package ru.sbercourse.cinema.ticketoffice.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.sbercourse.cinema.ticketoffice.model.Genre;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Schema(description = "DTO фильма")
 public class FilmDTO extends GenericDTO {
 
@@ -29,9 +29,6 @@ public class FilmDTO extends GenericDTO {
     @Schema(description = "Описание фильма", example = "Подросток Марти с помощью машины времени...")
     private String description;
 
-    @Schema(description = "Путь к файлу с постером", example = "/img/pic.jpg")
-    private String posterPath;
-
-    @Schema(description = "Создатели фильма")
-    private Set<FilmCreatorDTO> filmCreators;
+    @Schema(description = "Имя файла с постером", example = "1.jpg")
+    private String posterFileName;
 }

@@ -11,7 +11,7 @@
 <body>
 <div layout:fragment="content">
     <h3 class="mt-3 mb-3">Добавить фильм</h3>
-    <form class="needs-validation" style="max-width: 50vw" method="POST" th:action="@{/films/add}" th:object="${filmForm}">
+    <form enctype="multipart/form-data" class="needs-validation" style="max-width: 50vw" method="POST" th:action="@{/films/add}" th:object="${filmForm}">
         <div class="mt-3 row g-2">
             <div class="col-md">
                 <div class="form-floating">
@@ -39,14 +39,14 @@
             </div>
             <div class="col-md-4">
                 <div class="form-floating">
-                    <input name="releaseYear" type="number" min="1895" minlength="4" maxlength="4" class="form-control" id="releaseYear" required>
+                    <input name="releaseYear" type="number" min="1895" max="2999" class="form-control" id="releaseYear" required>
                     <label for="releaseYear">Год выхода</label>
                 </div>
             </div>
         </div>
         <div class="mt-3 row g-2">
-            <label for="formFile" class="form-label">Постер</label>
-            <input class="form-control" type="file" id="formFile">
+            <label for="imageUpload" class="form-label">Постер</label>
+            <input name="file" class="form-control" type="file" id="imageUpload" accept="image/*">
         </div>
         <div class="mt-3 row g-2">
             <label for="description">Описание</label>
