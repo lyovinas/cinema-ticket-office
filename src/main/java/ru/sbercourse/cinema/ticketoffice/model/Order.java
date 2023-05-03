@@ -28,9 +28,7 @@ public class Order extends GenericModel{
     @JoinColumn(name = "film_session_id", foreignKey = @ForeignKey(name = "fk_orders_filmsessions"), nullable = false)
     private FilmSession filmSession;
 
-//    @ManyToOne(optional = false)
-//    @JoinColumn(name = "seat_id", foreignKey = @ForeignKey(name = "fk_orders_seats"), nullable = false)
-    @ManyToMany(fetch = FetchType.EAGER)//, cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "orders_seats",
             joinColumns = @JoinColumn(name = "order_id"), foreignKey = @ForeignKey(name = "fk_orders_seats"),
             inverseJoinColumns = @JoinColumn(name = "seat_id"), inverseForeignKey = @ForeignKey(name = "fk_seats_orders"))

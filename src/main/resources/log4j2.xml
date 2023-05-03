@@ -30,7 +30,7 @@
         </Root>
 
         <!-- LOG "com.*" at TRACE level -->
-        <Logger name="com.sber.java13spring.java13springproject.libraryproject" level="error, info"></Logger>
+        <Logger name="ru.sbercourse.cinema.ticketoffice" level="error, info"></Logger>
     </Loggers>
 
 </Configuration>

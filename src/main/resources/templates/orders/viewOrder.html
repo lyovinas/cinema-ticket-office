@@ -23,14 +23,10 @@
                 <h7 class="ms-2">Дата:</h7>
                 <input type="date" class="form-control" id="sessionStartDate" th:value="${filmSession.startDate}" disabled readonly>
             </div>
-<!--            <div class="col-md">-->
-<!--            </div>-->
             <div class="col-md-2">
                 <h7 class="ms-2">Время:</h7>
                 <input type="time" class="form-control" id="sessionStartTime" th:value="${filmSession.startTime}" disabled readonly>
             </div>
-<!--            <div class="col-md">-->
-<!--            </div>-->
         </div>
         <h6 class="mt-3 mb-1">Выбранные места:</h6>
         <div class="row g-2 mx-1">
@@ -62,8 +58,6 @@
         <div class="mt-3 row g-2">
             <button sec:authorize="isAuthenticated() && hasRole(T(ru.sbercourse.cinema.ticketoffice.constants.UserRolesConstants).USER)"
                     th:if="${!order.purchase} and ${canPurchased}" type="submit" class="btn btn-primary">Купить</button>
-<!--            <a th:if="${!order.purchase}" class="btn btn-outline-danger" th:href="'/orders/delete/' + ${order.id}"-->
-<!--               onclick="return confirm('Вы действительно хотите отменить бронирование?');">Отменить</a>-->
             <button type="button" class="btn btn-secondary" onclick="window.history.back()">Назад</button>
         </div>
     </form>

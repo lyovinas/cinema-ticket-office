@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout}">
 
 <head>
@@ -14,7 +13,6 @@
   <h1>Пользователи сервиса</h1>
   <div class="row">
     <div class="col">
-<!--      <a  sec:authorize="hasRole('ADMIN')"-->
       <a href="/users/add-manager" class="btn btn-secondary" role="button" style="float: right"
           aria-disabled="true">Добавить управляющего</a>
     </div>
@@ -114,7 +112,7 @@
       </li>
       <li class="page-item" th:classappend="${users.number eq users.totalPages - 1} ? 'disabled'">
         <a class="page-link"
-           th:href="@{/users?page={id}(id=${users.number + 1})}"
+           th:href="@{/users?page={id}(id=${users.number + 2})}"
            aria-label="Next" title="Следующая страница" data-toggle="tooltip">
           <span aria-hidden="true">&raquo;</span>
         </a>

@@ -17,7 +17,6 @@
                 <h2>Все фильмы</h2>
             </div>
             <div class="col">
-                <!--        <a sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"-->
                 <a href="films/add" class="btn btn-success" role="button" style="float: right"
                         aria-disabled="true">Добавить фильм</a>
             </div>
@@ -44,7 +43,6 @@
                     </div>
                 </div>
                 <div class="row g-0 mb-2">
-<!--                    <a class="btn btn-sm btn-outline-success" th:href="'/films/update/' + ${film.getId()}" style="float: right">Редактировать</a>-->
                     <a th:if="${!film.isDeleted()}" class="btn btn-sm btn-outline-danger" th:href="'/films/delete/' + ${film.getId()}"
                        onclick="return confirm('Вы действительно хотите удалить фильм?');">Удалить</a>
                     <a th:if="${film.isDeleted()}" class="btn btn-sm btn-outline-warning" th:href="'/films/restore/' + ${film.getId()}">Восстановить</a>
@@ -78,6 +76,7 @@
             </nav>
         </div>
     </div>
+
     <div class="mt-5">
         <hr class="hr"/>
         <h3>Поиск фильма</h3>

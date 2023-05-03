@@ -13,7 +13,7 @@ public class FilmSessionMapper extends GenericMapper<FilmSession, FilmSessionDTO
         implements ConverterForSpecificFields<FilmSession, FilmSessionDTO> {
 
     private FilmRepository filmRepository;
-//    private OrderRepository orderRepository;
+
 
 
     public FilmSessionMapper() {
@@ -25,17 +25,11 @@ public class FilmSessionMapper extends GenericMapper<FilmSession, FilmSessionDTO
     @Override
     public void setupMapper() {
         modelMapper.createTypeMap(FilmSession.class, FilmSessionDTO.class)
-                .addMappings(m -> {
-                    m.skip(FilmSessionDTO::setFilmId);
-//                    m.skip(FilmSessionDto::setOrdersIds);
-                })
+                .addMappings(m -> m.skip(FilmSessionDTO::setFilmId))
                 .setPostConverter(toDtoConverter());
 
         modelMapper.createTypeMap(FilmSessionDTO.class, FilmSession.class)
-                .addMappings(m -> {
-                    m.skip(FilmSession::setFilm);
-//                    m.skip(FilmSession::setOrders);
-                })
+                .addMappings(m -> m.skip(FilmSession::setFilm))
                 .setPostConverter(toEntityConverter());
     }
 
@@ -45,11 +39,6 @@ public class FilmSessionMapper extends GenericMapper<FilmSession, FilmSessionDTO
         if (filmId != null) {
             destination.setFilm(filmRepository.findById(filmId).orElse(null));
         } else destination.setFilm(null);
-
-//        Set<Long> ordersIds = source.getOrdersIds();
-//        if (ordersIds != null) {
-//            destination.setOrders(new HashSet<>(orderRepository.findAllById(ordersIds)));
-//        } else destination.setOrders(null);
     }
 
     @Override
@@ -60,15 +49,6 @@ public class FilmSessionMapper extends GenericMapper<FilmSession, FilmSessionDTO
             filmId = film.getId();
         }
         destination.setFilmId(filmId);
-
-//        Set<Long> ordersIds = null;
-//        Set<Order> orders = source.getOrders();
-//        if (orders != null) {
-//            ordersIds = orders.stream()
-//                    .map(GenericModel::getId)
-//                    .collect(Collectors.toSet());
-//        }
-//        destination.setOrdersIds(ordersIds);
     }
 
 
@@ -76,9 +56,4 @@ public class FilmSessionMapper extends GenericMapper<FilmSession, FilmSessionDTO
     public void setFilmRepository(FilmRepository filmRepository) {
         this.filmRepository = filmRepository;
     }
-
-//    @Autowired
-//    public void setOrderRepository(OrderRepository orderRepository) {
-//        this.orderRepository = orderRepository;
-//    }
 }

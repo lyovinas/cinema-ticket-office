@@ -2,13 +2,14 @@ package ru.sbercourse.cinema.ticketoffice.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.Set;
 
 @Entity
 @Table(name = "seats")
@@ -25,8 +26,4 @@ public class Seat extends GenericModel{
 
     @Column(name = "place", nullable = false)
     private Byte place;
-
-//    @ToString.Exclude
-//    @ManyToMany(mappedBy = "seats")
-//    private Set<Order> orders;
 }

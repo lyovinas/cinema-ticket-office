@@ -24,7 +24,6 @@
             <div class="col-md-4">
                 <div class="form-floating">
                     <select class="form-select" name="genre" id="genre" th:object="${film}" th:field="*{genre}" required>
-<!--                        <option selected th:value="${film.genre}" th:text="${film.genre.text}"></option>-->
                         <option th:selected="${film.genre.text}"
                                 th:each="genre : ${T(ru.sbercourse.cinema.ticketoffice.model.Genre).values()}"
                                 th:value="${genre}" th:text="${genre.text}"></option>
@@ -58,42 +57,16 @@
                    onclick="return confirm('Удалить создателя из списка?');" style="float: right">Удалить</a>
             </div>
         </div>
-<!--        <form class="needs-validation" method="POST" th:action="@{/films/addFilmCreator}" th:object="${filmCreatorAddForm}">-->
-<!--            <input type="hidden" name="filmId" th:value="${film.id}">-->
-<!--            <div class="mt-3 row g-1 align-items-center">-->
-<!--                <div class="col-md-2">-->
-<!--                    <h6 class="ms-2">Добавить создателя:</h6>-->
-<!--                </div>-->
-<!--                <div class="col-md">-->
-<!--                    <div class="form-floating">-->
-<!--                        <select class="form-select" name="filmCreatorId" id="filmCreatorFullName" required>-->
-<!--                            <option selected th:value="${null}">Выберите создателя</option>-->
-<!--                            <option-->
-<!--                                    th:each="filmCreator : ${filmCreators}"-->
-<!--                                    th:value="${filmCreator.getId()}"-->
-<!--                                    th:text="${filmCreator.getFullName()}">-->
-<!--                            </option>-->
-<!--                        </select>-->
-<!--                        <label for="filmCreatorFullName">ФИО создателя</label>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="col-md">-->
-<!--                    <button type="submit" class="btn btn-outline-dark">Добавить</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </form>-->
         <div class="mt-1 row g-1">
             <a class="btn btn-outline-dark" th:href="'/films/' + ${film.id} + '/addFilmCreator'" role="button">Добавить создателя</a>
         </div>
 
         <div class="mt-3 row g-2">
             <h5 class="mb-0">Постер</h5>
-<!--            <label for="formFile" class="form-label fw-weight-bold">Постер</label>-->
             <input name="file" class="form-control" type="file" accept="image/*">
         </div>
         <div class="mt-3 row g-2">
             <h5 class="mb-0">Описание</h5>
-<!--            <label for="description">Описание</label>-->
             <textarea name="description" th:text="${film.description}" type="text" class="form-control" id="description" rows="4" required></textarea>
         </div>
 

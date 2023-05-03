@@ -34,16 +34,3 @@ public interface OrderRepository extends GenericRepository<Order>{
             """)
     Long getTotalTickets(@Param(value = "startDate") LocalDate startDate, @Param(value = "endDate") LocalDate endDate);
 }
-
-//    @Query("SELECT new ru.sbercourse.cinema.ticketoffice.dto.OrderInfoDTO(o.id, o.createdWhen, f.title, o.cost, o.purchase) "
-//            + "FROM Film f JOIN f.filmSessions fs JOIN fs.orders o")
-//    Page<OrderInfoDTO> getAllInfo(PageRequest pageRequest);
-
-//    @Query(nativeQuery = true,
-//            value = """
-//                    select o.id as orderId, o.created_when as orderCreatedWhen, o.cost as cost,
-//                           o.purchase as purchase , f.title as filmTitle
-//                    from orders o join film_sessions fs on fs.id = o.film_session_id
-//                            join films f on f.id = fs.film_id
-//                    """)
-//    Page<OrderInfoDTO> getAllInfo(PageRequest pageRequest);

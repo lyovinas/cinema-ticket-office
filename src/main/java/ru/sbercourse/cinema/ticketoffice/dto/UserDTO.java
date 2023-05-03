@@ -44,6 +44,3 @@ public class UserDTO extends GenericDTO {
     @Schema(description = "Идентификаторы заказов", accessMode = Schema.AccessMode.READ_ONLY)
     private Set<Long> ordersIds;
 }
-
-//    @Schema(description = "Отзывы пользователя", accessMode = Schema.AccessMode.READ_ONLY)
-//    private Set<ReviewDTO> reviews;

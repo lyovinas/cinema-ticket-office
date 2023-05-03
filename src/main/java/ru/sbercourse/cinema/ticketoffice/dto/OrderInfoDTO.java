@@ -13,18 +13,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class OrderInfoDTO {
 
-//    @Column(name = "id", table = "orders")
     private Long orderId;
 
-//    @Column(name = "created_when", table = "orders")
     protected LocalDateTime orderCreatedWhen;
 
-//    @Column(name = "title", table = "films")
     private String filmTitle;
 
-//    @Column(name = "cost", table = "orders")
     private double cost;
 
-//    @Column(name = "purchase", table = "orders")
     private boolean purchase;
 }

@@ -10,7 +10,6 @@
 
 <body>
 <div layout:fragment="content">
-<!--    <hr class="mt-3 hr"/>-->
     <div class="mt-3">
         <div class="row mb-2">
             <div class="col">
@@ -39,7 +38,6 @@
                     </div>
                 </div>
                 <div class="row g-0 mb-2">
-<!--                    <a class="btn btn-sm btn-outline-success" th:href="'/films/update/' + ${film.getId()}" style="float: right">Редактировать</a>-->
                     <a th:if="${!film.isDeleted()}" class="btn btn-sm btn-outline-danger" th:href="'/films/delete/' + ${film.getId()}"
                        onclick="return confirm('Вы действительно хотите удалить фильм?');">Удалить</a>
                     <a th:if="${film.isDeleted()}" class="btn btn-sm btn-outline-warning" th:href="'/films/restore/' + ${film.getId()}">Восстановить</a>

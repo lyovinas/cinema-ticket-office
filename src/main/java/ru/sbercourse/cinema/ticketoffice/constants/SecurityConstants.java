@@ -41,7 +41,6 @@ public interface SecurityConstants {
 
   List<String> FILM_CREATORS_PERMISSION_LIST = List.of(
       "/filmCreators",
-//      "/filmCreators/{id}",
       "/filmCreators/add",
       "/filmCreators/update",
       "/filmCreators/update/{id}",
@@ -109,8 +108,6 @@ public interface SecurityConstants {
 
   List<String> USERS_PERMISSION_LIST = List.of(
       "/users",
-//      "/users/ban/{id}",
-//      "/users/unban/{id}",
       "/users/add-manager",
       "/users/delete/{id}",
       "/users/restore/{id}"

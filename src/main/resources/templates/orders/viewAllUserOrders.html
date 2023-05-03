@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout}">
 
 <head>
@@ -33,13 +32,10 @@
                     <td th:text="${order.cost}"></td>
                     <td th:text="${order.purchase ? 'Покупка' : 'Бронирование'}"></td>
                     <td>
-<!--                        <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">-->
                         <div>
-<!--                            <a class="btn btn-sm btn-outline-success" th:href="'/orders/update/' + ${order.id}" style="float: right">Редактировать</a>-->
                             <a class="btn btn-sm btn-outline-info" th:href="'/orders/get/' + ${order.orderId}" style="float: right">Подробнее</a>
                             <a th:if="${!order.purchase}" class="btn btn-sm btn-outline-danger" th:href="'/orders/delete/' + ${order.orderId}"
                                onclick="return confirm('Вы действительно хотите отменить бронирование?');" style="float: right">Отменить</a>
-<!--                            <a th:if="${order.isDeleted()}" class="btn btn-sm btn-outline-warning" th:href="'/orders/restore/' + ${order.orderId}" style="float: right">Восстановить</a>-->
                         </div>
                     </td>
                 </tr>

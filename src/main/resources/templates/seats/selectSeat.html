@@ -17,7 +17,6 @@
 
     <form class="needs-validation" style="max-width: 50vw" method="POST" th:object="${orderForm}"
           th:action="@{/orders/preview}">
-<!--        <input type="hidden" name="userId" th:value="5">-->
         <input type="hidden" name="filmSessionId" th:value="${filmSession.id}">
 
         <div class="ms-2 mt-3" th:each="row : ${seatsInMap.keySet()}">
@@ -25,70 +24,17 @@
             <div class="form-check form-check-inline" th:each="place : ${seatsInMap.get(row).keySet()}">
                 <input th:if="${seatsInMap.get(row).get(place) gt 0}" class="form-check-input" type="checkbox" name="seatIds" id="free" th:value="${seatsInMap.get(row).get(place)}">
                 <label th:if="${seatsInMap.get(row).get(place) gt 0}" class="form-check-label" for="free" th:text="${place}"></label>
-                <input th:if="${seatsInMap.get(row).get(place) eq 0}" class="form-check-input" type="checkbox" name="seatIds" id="occupied" th:value="${seatsInMap.get(row).get(place)}" disabled>
+                <input th:if="${seatsInMap.get(row).get(place) eq 0}" class="form-check-input" type="checkbox" name="seatIds" id="occupied" th:value="${seatsInMap.get(row).get(place)}" style="background: gainsboro" disabled>
                 <label th:if="${seatsInMap.get(row).get(place) eq 0}" class="form-check-label" for="occupied" th:text="${place}"></label>
             </div>
         </div>
 
-<!--        <div class="mt-3 row g-2">-->
-<!--            <div class="col-md">-->
-<!--                <div class="form-floating">-->
-<!--                    <input name="row" type="text" class="form-control" id="row" placeholder="Ряд" required>-->
-<!--&lt;!&ndash;                    <select class="form-select" name="row" id="row">&ndash;&gt;-->
-<!--&lt;!&ndash;                        <option selected value="default">Выберите ряд из списка</option>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <option th:each="row : ${seatsInMap.keySet()}"&ndash;&gt;-->
-<!--&lt;!&ndash;                                th:value="${row}" th:text="${row}"></option>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </select>&ndash;&gt;-->
-<!--                    <label for="row">Ряд</label>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-md">-->
-<!--                <div class="form-floating">-->
-<!--                    <input name="place" type="text" class="form-control" id="place" placeholder="Место" required>-->
-<!--&lt;!&ndash;                    <select class="form-select" name="place" id="place">&ndash;&gt;-->
-<!--&lt;!&ndash;                        <option selected value="default">Выберите место в ряду</option>&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                        <option th:each="place : ${seatsInMap.get(row)}"&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                                th:value="${place}" th:text="${place}"></option>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;                    </select>&ndash;&gt;-->
-<!--                    <label for="place">Место</label>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
         <div class="mt-3 row g-2">
             <button type="submit" class="btn btn-primary">Выбрать</button>
             <button type="button" class="btn btn-secondary" onclick="window.history.back()">Назад</button>
         </div>
     </form>
 
-<!--    <script src="jquery.min.js"></script>-->
-<!--    <script src="bootstrap.min.js"></script>-->
-<!--    <script src="bootstrap-select.min.js"></script>-->
-<!--    <script>-->
-<!--        $(function(){-->
-<!--            $("form").trigger("reset");-->
-<!--            $("#place").chainedTo("#row");-->
-<!--            $("#row").change(function () {-->
-<!--                $("#place").selectpicker('refresh');-->
-<!--            });-->
-<!--        });-->
-<!--    </script>-->
-
-<!--    <div class="row">-->
-<!--        <div class="accordion" id="rows">-->
-<!--            <div class="accordion-item" th:each="row : ${seatsInMap.keySet()}">-->
-<!--                <h2 class="accordion-header" id="headingOne">-->
-<!--                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" th:text="'Ряд №' + ${row}">-->
-<!--                    </button>-->
-<!--                </h2>-->
-<!--                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#rows">-->
-<!--                    <div class="accordion-body" th:text="${seatsInMap.get(row)}">-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--&lt;!&ndash;        <div class="col" th:each="seatMap : ${seatsInMap}" th:text="${seatMap}"></div>&ndash;&gt;-->
-<!--    </div>-->
-<!--    <div class="row" th:text="${seatsInMap.keySet()}"></div>-->
 </div>
 </body>
 

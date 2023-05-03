@@ -6,7 +6,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.transaction.annotation.Transactional;
-import ru.sbercourse.cinema.ticketoffice.dto.SeatDTO;
 import ru.sbercourse.cinema.ticketoffice.dto.UserDTO;
 import ru.sbercourse.cinema.ticketoffice.mapper.UserMapper;
 import ru.sbercourse.cinema.ticketoffice.model.Role;

@@ -1,9 +1,5 @@
 package ru.sbercourse.cinema.ticketoffice.dto;
 
-//@Getter
-//@Setter
-//@NoArgsConstructor
-//@AllArgsConstructor
 public interface SeatsMapDTO {
 
     Long getSeatId();

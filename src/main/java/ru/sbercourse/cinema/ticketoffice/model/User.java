@@ -51,8 +51,3 @@ public class User extends GenericModel{
             cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Order> orders;
 }
-
-//    @ToString.Exclude
-//    @OneToMany(mappedBy = "user", orphanRemoval = true,
-//            cascade = {CascadeType.MERGE, CascadeType.REMOVE})
-//    private Set<Review> reviews;

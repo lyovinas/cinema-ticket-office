@@ -43,6 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
       );
     } else {
       User user = repository.getByLogin(username);
+      if (user.isDeleted()) throw new UsernameNotFoundException("User is softDeleted");
       List<GrantedAuthority> authorities =
               List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().getTitle()));
       return new CustomUserDetails(user.getId().intValue(), username, user.getPassword(), authorities);

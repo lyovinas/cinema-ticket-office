@@ -14,8 +14,7 @@ public enum Genre {
         this.text = text;
     }
 
-    public String getText() {//TODO удалить, если не используется
+    public String getText() {
         return text;
     }
-
 }

@@ -31,8 +31,3 @@ public interface SeatRepository extends GenericRepository<Seat> {
         """)
     List<SeatsMapDTO> getSeatsMap(@Param("filmSessionId") Long filmSessionId);
 }
-
-//    @Query("SELECT new ru.sbercourse.cinema.ticketoffice.dao.SeatsMapDAO(s.id, s.row, s.place, o.id, s.isDeleted) "
-//            + "FROM Order o RIGHT JOIN o.seats s WHERE o.isDeleted = false")
-//    @Query("SELECT new ru.sbercourse.cinema.ticketoffice.dao.SeatsMapDAO(s.id, s.row, s.place, o.id, s.isDeleted) "
-//            + "FROM Seat s LEFT JOIN s.orders o")

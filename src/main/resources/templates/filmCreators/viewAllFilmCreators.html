@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout}">
 
 <head>
@@ -28,14 +27,15 @@
       </div>
     </form>
   </div>
+
   <hr class="mt-3 hr"/>
+
   <div class="mt-5">
     <div class="row">
       <div class="col">
         <h2>Все создатели</h2>
       </div>
       <div class="col">
-<!--        <a sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"-->
         <a
            href="filmCreators/add"
            class="btn btn-success"
@@ -51,29 +51,19 @@
         <tr>
           <th scope="col">ФИО</th>
           <th scope="col">Позиция</th>
-<!--          <th scope="col">Фильмы</th>-->
           <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="filmCreator : ${filmCreators}">
-          <td th:text="${filmCreator.getFullName()}">
-<!--            <a class="text-link text-blue" th:href="'/filmCreators/' + ${filmCreator.getId()}" th:text="${filmCreator.getFullName()}"></a>-->
-          </td>
+          <td th:text="${filmCreator.getFullName()}"></td>
           <td th:text="${filmCreator.getPosition()}"></td>
-<!--          <td>-->
-<!--            <ul>-->
-<!--              <li th:each="film : ${filmCreator.getFilms()}" th:text="${film.getTitle()}"></li>-->
-<!--            </ul>-->
-<!--          </td>-->
           <td>
-<!--            <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">-->
             <div>
               <a class="btn btn-sm btn-outline-success" th:href="'/filmCreators/update/' + ${filmCreator.getId()}" style="float: right">Редактировать</a>
               <a th:if="${!filmCreator.isDeleted()}" class="btn btn-sm btn-outline-danger" th:href="'/filmCreators/delete/' + ${filmCreator.getId()}"
                  onclick="return confirm('Вы действительно хотите удалить создателя?');" style="float: right">Удалить</a>
               <a th:if="${filmCreator.isDeleted()}" class="btn btn-sm btn-outline-warning" th:href="'/filmCreators/restore/' + ${filmCreator.getId()}" style="float: right">Восстановить</a>
-<!--              <a class="btn btn-sm btn-outline-success" th:href="'/filmCreators/addFilm/' + ${filmCreator.getId()}" style="float: right">Добавить фильм</a>-->
             </div>
           </td>
         </tr>

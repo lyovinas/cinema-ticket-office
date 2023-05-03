@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout}">
 
 <head>
@@ -11,39 +10,6 @@
 
 <body>
 <div layout:fragment="content">
-<!--    <hr class="hr"/>-->
-<!--    <h3>Поиск фильма</h3>-->
-<!--    <form method="POST" th:action="@{/orders/search}" th:object="${orderSearchForm}">-->
-<!--        <div class="mt-0 row g-2">-->
-<!--            <div class="col-md">-->
-<!--                <div class="form-floating">-->
-<!--                    <input name="orderTitle" type="text" class="form-control" id="orderTitle">-->
-<!--                    <label for="orderTitle">Название фильма</label>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-md">-->
-<!--                <div class="form-floating">-->
-<!--                    <input name="directorsFio" type="text" class="form-control" id="directorsFio">-->
-<!--                    <label for="directorsFio">ФИО создателя</label>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-md">-->
-<!--                <div class="form-floating">-->
-<!--                    <select class="form-select" name="genre" id="genre">-->
-<!--                        <option selected th:value="null">Выберете жанр из списка</option>-->
-<!--                        <option th:each="genre : ${T(ru.sbercourse.orderlibrary.model.Genre).values()}"-->
-<!--                                th:value="${genre}" th:text="${genre.getGenreTextDisplay()}"></option>-->
-<!--                    </select>-->
-<!--                    <label for="genre">Жанр фильма</label>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="row g-2">-->
-<!--                <button type="submit" class="btn btn-secondary">Найти фильм</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </form>-->
-<!--    <hr class="mt-3 hr"/>-->
-
     <div class="mt-5">
         <h2>Список всех заказов</h2>
         <div>
@@ -68,9 +34,7 @@
                     <td th:text="${order.cost}"></td>
                     <td th:text="${order.purchase ? 'Покупка' : 'Бронирование'}"></td>
                     <td>
-<!--                        <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">-->
                         <div>
-<!--                            <a class="btn btn-sm btn-outline-success" th:href="'/orders/update/' + ${order.id}" style="float: right">Редактировать</a>-->
                             <a th:if="${!order.isDeleted()}" class="btn btn-sm btn-outline-danger" th:href="'/orders/delete/' + ${order.id}"
                                onclick="return confirm('Вы действительно хотите удалить заказ?');" style="float: right">Удалить</a>
                             <a th:if="${order.isDeleted()}" class="btn btn-sm btn-outline-warning" th:href="'/orders/restore/' + ${order.id}" style="float: right">Восстановить</a>

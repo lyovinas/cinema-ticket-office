@@ -15,13 +15,3 @@ public class FilmSessionService extends GenericService<FilmSession, FilmSessionD
     }
 
 }
-
-//    public Set<FilmSession> getByPeriod(LocalDate start, LocalDate end) {
-//        return start !=null && end != null
-//                ? ((FilmSessionRepository) repository).getByPeriod(start, end)
-//                : null;
-//    }
-
-//    public Set<FilmSession> getActual() {
-//        return ((FilmSessionRepository) repository).getActual();
-//    }
