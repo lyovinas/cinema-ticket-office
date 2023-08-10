@@ -31,4 +31,7 @@ public class FilmDTO extends GenericDTO {
 
     @Schema(description = "Имя файла с постером", example = "1.jpg")
     private String posterFileName;
+
+    @Schema(description = "Рейтинг Кинопоиска", example = "8.314")
+    private Float ratingKp;
 }

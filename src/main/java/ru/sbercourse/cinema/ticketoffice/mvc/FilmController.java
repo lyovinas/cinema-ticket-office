@@ -12,6 +12,7 @@ import ru.sbercourse.cinema.ticketoffice.dto.FilmDTO;
 import ru.sbercourse.cinema.ticketoffice.dto.FilmSearchDTO;
 import ru.sbercourse.cinema.ticketoffice.service.FilmCreatorService;
 import ru.sbercourse.cinema.ticketoffice.service.FilmService;
+import ru.sbercourse.cinema.ticketoffice.utils.KinopoiskApi;
 
 @Controller
 @RequestMapping("/films")
@@ -46,6 +47,7 @@ public class FilmController {
 
     @PostMapping("/add")
     public String create(@ModelAttribute("filmForm") FilmDTO filmDTO, @RequestParam("file") MultipartFile file) {
+        filmDTO.setRatingKp(filmService.getRating(filmDTO, KinopoiskApi.RatingType.KP));
         if(file != null && file.getSize() > 0) {
             filmService.create(filmDTO, file);
         } else {
@@ -75,6 +77,10 @@ public class FilmController {
 
     @PostMapping("/update")
     public String update(@ModelAttribute("filmForm") FilmDTO filmDTO, @RequestParam("file") MultipartFile file) {
+        Float ratingKp = filmService.getRating(filmDTO, KinopoiskApi.RatingType.KP);
+        if (ratingKp != null) {
+            filmDTO.setRatingKp(ratingKp);
+        }
         if(file != null && file.getSize() > 0) {
             filmService.update(filmDTO, file);
         } else {

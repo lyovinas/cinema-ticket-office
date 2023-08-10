@@ -20,6 +20,7 @@ import ru.sbercourse.cinema.ticketoffice.repository.FilmRepository;
 import ru.sbercourse.cinema.ticketoffice.repository.UserRepository;
 import ru.sbercourse.cinema.ticketoffice.service.userdetails.CustomUserDetails;
 import ru.sbercourse.cinema.ticketoffice.utils.FileHelper;
+import ru.sbercourse.cinema.ticketoffice.utils.KinopoiskApi;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,6 +42,7 @@ public class FilmService extends GenericService<Film, FilmDTO> {
     private FilmCreatorMapper filmCreatorMapper;
     private UserRepository userRepository;
     private FileHelper fileHelper;
+    private KinopoiskApi kinopoiskApi;
 
 
 
@@ -82,6 +84,10 @@ public class FilmService extends GenericService<Film, FilmDTO> {
                 existingFilm.setPosterFileName(filmDTO.getPosterFileName());
                 existingFilm.setUpdatedWhen(LocalDateTime.now());
                 existingFilm.setUpdatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+                Float updatedRatingKp = filmDTO.getRatingKp();
+                if (updatedRatingKp != null) {
+                    existingFilm.setRatingKp(updatedRatingKp);
+                }
                 return mapper.toDTO(repository.save(existingFilm));
             }
         }
@@ -206,6 +212,15 @@ public class FilmService extends GenericService<Film, FilmDTO> {
         return mapper.toDTOs(films);
     }
 
+    public Float getRating(FilmDTO filmDTO, KinopoiskApi.RatingType ratingType) {
+        return kinopoiskApi.getRating(
+                filmDTO.getTitle(),
+                String.valueOf(filmDTO.getReleaseYear()),
+                filmDTO.getCountry(),
+                ratingType
+        );
+    }
+
 
 
     @Autowired
@@ -231,5 +246,10 @@ public class FilmService extends GenericService<Film, FilmDTO> {
     @Autowired
     public void setFileHelper(FileHelper fileHelper) {
         this.fileHelper = fileHelper;
+    }
+
+    @Autowired
+    public void setKinopoiskApi(KinopoiskApi kinopoiskApi) {
+        this.kinopoiskApi = kinopoiskApi;
     }
 }
