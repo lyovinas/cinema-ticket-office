@@ -15,7 +15,8 @@ import lombok.ToString;
 public class Role{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "default_gen")
+    @SequenceGenerator(name = "default_gen", initialValue = 2)
     @Column(name = "id")
     private Long id;
 

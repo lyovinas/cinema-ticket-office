@@ -20,8 +20,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class ReviewControllerTest extends CommonTest {
 
-    private final Long existingReviewId = 4L;
-    private final String existingLoginWithUserRole = "u";
+    private final Long EXISTING_REVIEW_ID = 1L;
+    private final String EXISTING_LOGIN_WITH_USER_ROLE = "u";
     @Autowired
     private ReviewService reviewService;
     @Autowired
@@ -30,7 +30,7 @@ class ReviewControllerTest extends CommonTest {
 
 
     @Test
-    @WithUserDetails(existingLoginWithUserRole)
+    @WithUserDetails(EXISTING_LOGIN_WITH_USER_ROLE)
     void create() throws Exception {
         Long existingFilmId = 1L;
         mvc.perform(get("/reviews/add/" + existingFilmId))
@@ -38,7 +38,7 @@ class ReviewControllerTest extends CommonTest {
                 .andExpect(view().name("reviews/addReview"))
                 .andExpect(model().attributeExists("film"));
 
-        UserDTO existingUserDTO = userService.getByLogin(existingLoginWithUserRole);
+        UserDTO existingUserDTO = userService.getByLogin(EXISTING_LOGIN_WITH_USER_ROLE);
         ReviewDTO newReviewDTO = new ReviewDTO(existingFilmId, existingUserDTO, "MVC_Test");
 
         mvc.perform(post("/reviews/add")
@@ -52,32 +52,32 @@ class ReviewControllerTest extends CommonTest {
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN", password = "admin")
     void softDelete() throws Exception {
-        reviewService.restore(existingReviewId);
-        ReviewDTO reviewForSoftDelete = reviewService.getById(existingReviewId);
+        reviewService.restore(EXISTING_REVIEW_ID);
+        ReviewDTO reviewForSoftDelete = reviewService.getById(EXISTING_REVIEW_ID);
         assertFalse(reviewForSoftDelete.isDeleted());
 
-        mvc.perform(get("/reviews/delete/" + existingReviewId))
+        mvc.perform(get("/reviews/delete/" + EXISTING_REVIEW_ID))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:" + null))
                 .andExpect(redirectedUrl("null"));
 
-        reviewForSoftDelete = reviewService.getById(existingReviewId);
+        reviewForSoftDelete = reviewService.getById(EXISTING_REVIEW_ID);
         assertTrue(reviewForSoftDelete.isDeleted());
     }
 
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN", password = "admin")
     void restore() throws Exception {
-        reviewService.softDelete(existingReviewId);
-        ReviewDTO reviewForRestore = reviewService.getById(existingReviewId);
+        reviewService.softDelete(EXISTING_REVIEW_ID);
+        ReviewDTO reviewForRestore = reviewService.getById(EXISTING_REVIEW_ID);
         assertTrue(reviewForRestore.isDeleted());
 
-        mvc.perform(get("/reviews/restore/" + existingReviewId))
+        mvc.perform(get("/reviews/restore/" + EXISTING_REVIEW_ID))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:" + null))
                 .andExpect(redirectedUrl("null"));
 
-        reviewForRestore = reviewService.getById(existingReviewId);
+        reviewForRestore = reviewService.getById(EXISTING_REVIEW_ID);
         assertFalse(reviewForRestore.isDeleted());
     }
 }

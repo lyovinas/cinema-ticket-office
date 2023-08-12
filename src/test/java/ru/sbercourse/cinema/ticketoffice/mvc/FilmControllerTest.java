@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FilmControllerTest extends CommonTest {
 
     private final FilmDTO testFilmDTO = new FilmDTO("MVC_Test Title", (short) 0,
-            "MVC_Test Country", Genre.ACTION, "", null);
+            "MVC_Test Country", Genre.ACTION, "", null, 0F);
     private final FilmSearchDTO testFilmSearchDTO =
             new FilmSearchDTO(testFilmDTO.getTitle(), null, null);
     private final Long existingFilmId = 6L;
