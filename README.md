@@ -7,6 +7,7 @@
 - Используется СУБД PostgreSQL, взаимодействие с которой осуществляется средствами Spring Data JPA.
 - Безопасность (аутентификация, авторизация) обеспечена с помощью Spring Security.
 - Организовано логирование в файлы на основе log4j2.
+- Реализована интеграция с API Кинопоиска для отображения рейтинга фильмов.
 - Написаны интеграционные тесты для MVC контроллеров.
 
 Основной функционал:
@@ -17,6 +18,21 @@
 ## Технологии и инструменты
 
 IntelliJ IDEA | Java17 | Maven | Spring MVC | Thymeleaf | Spring Security | Spring DATA JPA | PostgreSQL | AOP | Lombok | Mockito | JUnit | Docker
+
+## Запуск приложения
+1. Клонировать проект командой:  
+   git clone https://github.com/lyovinas/cinema-ticket-office.git
+2. При запуске приложения в IDE
+   - скорректировать параметры подключения к БД в файле src/main/resources/application.properties;
+   - при необходимоси запуска БД в Docker - использовть файл docker-compose-db.yml
+3. Для запуска приложения и БД в Docker:
+   - собрать проект в исполняемый jar-файл с помощью Maven, при необходимости скорректировать файл Dockerfile;
+   - запустить файлы docker-compose-db.yml и docker-compose-app.yml
+4. Для быстрого создания демонстрационных данных автоматически будут выполнены команды из файла src/main/resources/data.sql. В папке src/main/resources/posters расположены файлы постеров для демонстрационных фильмов.
+5. После запуска приложения главная страница доступна по адресу: http://localhost:8080/
+6. Параметры входа на сайт
+   - для администратора: имя - admin, пароль - admin;
+   - для пользователя: имя - u, пароль - u.
 
 ## Скриншоты
 ![image](https://github.com/lyovinas/cinema-ticket-office/blob/master/screenshots.gif)
