@@ -27,7 +27,7 @@ public class KinopoiskApi {
     public Float getRating(String title, String year, String country, RatingType ratingType) {
         final String METHOD_URL = "/v1.3/movie?selectFields=rating&limit=1&type=movie" +
                 "&name=" + URLEncoder.encode(title, StandardCharsets.UTF_8) +
-                "&year=" + year + "&countries.name=" + country;
+                "&year=" + year + "&countries.name=" + URLEncoder.encode(country, StandardCharsets.UTF_8);
         try {
             HttpResponse response = Request.Get(BASE_URL.concat(METHOD_URL))
                     .addHeader(HEADER_AUTH_NAME, token)
