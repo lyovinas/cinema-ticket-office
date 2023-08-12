@@ -19,7 +19,9 @@
             <div class="col-md-9">
                 <div class="card-body">
                     <h4 class="card-title mt-3 mb-4" th:text="${film.title}"></h4>
-                    <p class="card-text"><span class="text-muted">Жанр: </span><span th:text="${film.genre.text}"></span></p>
+                    <p class="card-text"><span class="text-muted">Жанр: </span><span th:text="${film.genre.text}"></span>
+                        <span  th:if="${film.ratingKp != null}" style="float: right" th:text="'КП: ' + ${film.ratingKp}"></span>
+                    </p>
                     <p class="card-text"><span class="text-muted">Год выхода: </span><span th:text="${film.releaseYear}"></span></p>
                     <p class="card-text mb-4"><span class="text-muted">Страна производства: </span><span th:text="${film.country}"></span></p>
                     <p class="card-text" th:each="filmCreator : ${film.filmCreators}">
